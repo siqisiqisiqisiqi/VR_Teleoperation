@@ -1,0 +1,1719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="T170A">
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.00914372 -0.00010753 0.01430216" rpy="0 0 0" />
+      <mass value="4.99181163" />
+      <inertia ixx="0.03994737" ixy="-0.00001216" ixz="0.00262875" iyy="0.01559523" iyz="-0.00001248" izz="0.04887369" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.89804 0.91765 0.92941 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_hip_yaw_link">
+    <inertial>
+      <origin xyz="-0.09429802 0.00000000 -0.08140297" rpy="0 0 0" />
+      <mass value="1.53718881" />
+      <inertia ixx="0.00224082" ixy="0.00000000" ixz="-0.00077765" iyy="0.00279936" iyz="0.00000000" izz="0.00204769" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hip_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hip_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_hip_yaw" type="revolute">
+    <origin xyz="0.0470000000000008 0.105000000000001 -0.0274085525650127" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="left_hip_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.52" upper="0.52" effort="63" velocity="6.38" />
+  </joint>
+  <link name="left_hip_roll_link">
+    <inertial>
+      <origin xyz="-0.00294711 0.01127636 0.00001390" rpy="0 0 0" />
+      <mass value="2.87669901" />
+      <inertia ixx="0.00601541" ixy="-0.00025897" ixz="-0.00000009" iyy="0.00557195" iyz="0.00000357" izz="0.00638663" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hip_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hip_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_hip_roll" type="revolute">
+    <origin xyz="-0.000200000000000065 0 -0.0901999999999999" rpy="0 0 0" />
+    <parent link="left_hip_yaw_link" />
+    <child link="left_hip_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.17" upper="0.17" effort="63" velocity="6.38" />
+  </joint>
+  <link name="left_hip_pitch_link">
+    <inertial>
+      <origin xyz="0.00327401 0.02736153 -0.19706132" rpy="0 0 0" />
+      <mass value="4.86761026" />
+      <inertia ixx="0.07719424" ixy="0.00032980" ixz="0.00018138" iyy="0.07546995" iyz="-0.00552872" izz="0.01046835" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hip_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hip_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_hip_pitch" type="revolute">
+    <origin xyz="0.000200000000000096 0 0" rpy="0 0 0" />
+    <parent link="left_hip_roll_link" />
+    <child link="left_hip_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.78" upper="0.17" effort="267" velocity="5.75" />
+  </joint>
+  <link name="left_knee_pitch_link">
+    <inertial>
+      <origin xyz="-0.00316602 0.00295803 -0.15960071" rpy="0 0 0" />
+      <mass value="1.89223471" />
+      <inertia ixx="0.02574487" ixy="0.00024589" ixz="-0.00068059" iyy="0.02513711" iyz="0.00196902" izz="0.00191505" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_knee_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_knee_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_knee_pitch" type="revolute">
+    <origin xyz="0 0 -0.420000000000097" rpy="0 0 0" />
+    <parent link="left_hip_pitch_link" />
+    <child link="left_knee_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.57" upper="0" effort="267" velocity="5.75" />
+  </joint>
+  <link name="left_ankle_pitch_link">
+    <inertial>
+      <origin xyz="-0.00340080 -0.00174664 0.00000000" rpy="0 0 0" />
+      <mass value="0.52049810" />
+      <inertia ixx="0.00028487" ixy="0.00000008" ixz="0.00000000" iyy="0.00025145" iyz="0.00000000" izz="0.00029022" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ankle_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ankle_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_ankle_pitch" type="revolute">
+    <origin xyz="0 0 -0.37" rpy="0 0 0" />
+    <parent link="left_knee_pitch_link" />
+    <child link="left_ankle_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.04" upper="1.04" effort="42" velocity="7.12" />
+  </joint>
+  <link name="left_ankle_roll_link">
+    <inertial>
+      <origin xyz="0.02967445 -0.00130381 -0.06909381" rpy="0 0 0" />
+      <mass value="0.88510769" />
+      <inertia ixx="0.00098228" ixy="-0.00003129" ixz="0.00021873" iyy="0.00344001" iyz="-0.00001755" izz="0.00312303" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ankle_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ankle_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_ankle_roll" type="revolute">
+    <origin xyz="0 -0.00170000000000015 0" rpy="0 0 0" />
+    <parent link="left_ankle_pitch_link" />
+    <child link="left_ankle_roll_link" />
+    <axis xyz="-1 0 0" />
+    <limit lower="-0.087" upper="0.087" effort="23" velocity="7.85" />
+  </joint>
+  <link name="right_hip_yaw_link">
+    <inertial>
+      <origin xyz="-0.09429802 0.00000000 -0.08140297" rpy="0 0 0" />
+      <mass value="1.53718881" />
+      <inertia ixx="0.00224082" ixy="0.00000000" ixz="-0.00077765" iyy="0.00279936" iyz="0.00000000" izz="0.00204769" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hip_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hip_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_hip_yaw" type="revolute">
+    <origin xyz="0.0470000000000007 -0.105000000000001 -0.0274085525650127" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="right_hip_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.52" upper="0.52" effort="63" velocity="6.38" />
+  </joint>
+  <link name="right_hip_roll_link">
+    <inertial>
+      <origin xyz="-0.00275058 -0.01145017 0.00000000" rpy="0 0 0" />
+      <mass value="2.87669901" />
+      <inertia ixx="0.00602226" ixy="0.00026206" ixz="-0.00000004" iyy="0.00557190" iyz="0.00000336" izz="0.00639346" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hip_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hip_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_hip_roll" type="revolute">
+    <origin xyz="0 0 -0.0902" rpy="0 0 0" />
+    <parent link="right_hip_yaw_link" />
+    <child link="right_hip_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.17" upper="0.17" effort="63" velocity="6.38" />
+  </joint>
+  <link name="right_hip_pitch_link">
+    <inertial>
+      <origin xyz="0.00330368 -0.02752765 -0.19704478" rpy="0 0 0" />
+      <mass value="4.86770991" />
+      <inertia ixx="0.07721784" ixy="-0.00032830" ixz="0.00017258" iyy="0.07547907" iyz="0.00553668" izz="0.01048108" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hip_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hip_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_hip_pitch" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="right_hip_roll_link" />
+    <child link="right_hip_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.17" upper="0.78" effort="267" velocity="5.75" />
+  </joint>
+  <link name="right_knee_pitch_link">
+    <inertial>
+      <origin xyz="-0.00146546 -0.00312895 -0.15623962" rpy="0 0 0" />
+      <mass value="1.89223620" />
+      <inertia ixx="0.02468527" ixy="-0.00012625" ixz="-0.00031453" iyy="0.02397861" iyz="-0.00171898" izz="0.00180741" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_knee_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_knee_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_knee_pitch" type="revolute">
+    <origin xyz="0 0 -0.42" rpy="0 0 0" />
+    <parent link="right_hip_pitch_link" />
+    <child link="right_knee_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0" upper="1.57" effort="267" velocity="5.75" />
+  </joint>
+  <link name="right_ankle_pitch_link">
+    <inertial>
+      <origin xyz="-0.00340078 0.00154693 0.00000000" rpy="0 0 0" />
+      <mass value="0.52049766" />
+      <inertia ixx="0.00028487" ixy="-0.00000008" ixz="0.00000000" iyy="0.00025145" iyz="0.00000000" izz="0.00029022" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ankle_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ankle_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_ankle_pitch" type="revolute">
+    <origin xyz="0 0 -0.37" rpy="0 0 0" />
+    <parent link="right_knee_pitch_link" />
+    <child link="right_ankle_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-1.04" upper="1.04" effort="42" velocity="7.12" />
+  </joint>
+  <link name="right_ankle_roll_link">
+    <inertial>
+      <origin xyz="0.02967324 0.00131918 -0.06909036" rpy="0 0 0" />
+      <mass value="0.88500968" />
+      <inertia ixx="0.00098214" ixy="0.00003151" ixz="0.00021872" iyy="0.00343946" iyz="0.00001743" izz="0.00312243" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ankle_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ankle_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_ankle_roll" type="revolute">
+    <origin xyz="0 0.00149999999999972 0" rpy="0 0 0" />
+    <parent link="right_ankle_pitch_link" />
+    <child link="right_ankle_roll_link" />
+    <axis xyz="-1 0 0" />
+    <limit lower="-0.087" upper="0.087" effort="23" velocity="7.85" />
+  </joint>
+  <link name="waist_roll_link">
+    <inertial>
+      <origin xyz="0.04836016 0.00000000 -0.00391749" rpy="0 0 0" />
+      <mass value="1.11122048" />
+      <inertia ixx="0.00083224" ixy="0.00000000" ixz="0.00001930" iyy="0.00100782" iyz="0.00000000" izz="0.00104544" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/waist_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/waist_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="waist_roll" type="revolute">
+    <origin xyz="-0.0058 0 0.037391" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="waist_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.52" upper="0.52" effort="102" velocity="3.14" />
+  </joint>
+  <link name="waist_yaw_link">
+    <inertial>
+      <origin xyz="0.00034016 -0.00231526 0.08288189" rpy="0 0 0" />
+      <mass value="1.50619186" />
+      <inertia ixx="0.00202789" ixy="0.00001648" ixz="-0.00000114" iyy="0.00153669" iyz="0.00000287" izz="0.00185609" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/waist_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/waist_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="waist_yaw" type="revolute">
+    <origin xyz="0.0528 0 0" rpy="0 0 0" />
+    <parent link="waist_roll_link" />
+    <child link="waist_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.14" upper="3.14" effort="102" velocity="3.14" />
+  </joint>
+  <link name="waist_pitch_link">
+    <inertial>
+      <origin xyz="0.01298693 -0.00010630 0.17905861" rpy="0 0 0" />
+      <mass value="5.65595324" />
+      <inertia ixx="0.05277506" ixy="-0.00001398" ixz="0.00271270" iyy="0.03968556" iyz="-0.00006565" izz="0.02563782" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/waist_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/waist_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="waist_pitch" type="revolute">
+    <origin xyz="0 0 0.0868" rpy="0 0 0" />
+    <parent link="waist_yaw_link" />
+    <child link="waist_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="0" upper="0.52" effort="102" velocity="3.14" />
+  </joint>
+  <link name="head_yaw_link">
+    <inertial>
+      <origin xyz="0.00000000 -0.01761786 0.04141872" rpy="0 0 0" />
+      <mass value="0.38415471" />
+      <inertia ixx="0.00036023" ixy="0.00000000" ixz="0.00000000" iyy="0.00027558" iyz="0.00007698" izz="0.00019098" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/head_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/head_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="head_yaw" type="revolute">
+    <origin xyz="0 0 0.2958" rpy="0 0 0" />
+    <parent link="waist_pitch_link" />
+    <child link="head_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.14" upper="3.14" effort="11" velocity="4.18" />
+  </joint>
+  <link name="head_pitch_link">
+    <inertial>
+      <origin xyz="0.00008830 -0.00442758 0.00000000" rpy="0 0 0" />
+      <mass value="0.25954012" />
+      <inertia ixx="0.00007165" ixy="0.00000650" ixz="0.00000000" iyy="0.00009313" iyz="0.00000000" izz="0.00011444" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/head_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/head_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="head_pitch" type="revolute">
+    <origin xyz="0 0 0.0822" rpy="0 0 0" />
+    <parent link="head_yaw_link" />
+    <child link="head_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.35" upper="0.35" effort="4.8" velocity="4.71" />
+  </joint>
+  <link name="head_roll_link">
+    <inertial>
+      <origin xyz="0.05892138 -0.00000552 0.12882658" rpy="0 0 0" />
+      <mass value="0.14921742" />
+      <inertia ixx="0.00061678" ixy="0.00000003" ixz="-0.00012529" iyy="0.00058271" iyz="0.00000002" izz="0.00023190" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/head_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/head_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="head_roll" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="head_pitch_link" />
+    <child link="head_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.52" upper="0.52" effort="4.8" velocity="4.71" />
+  </joint>
+  <link name="left_shoulder_pitch_link">
+    <inertial>
+      <origin xyz="-0.00551209 0.05753102 0.00015499" rpy="0 0 0" />
+      <mass value="0.94519295" />
+      <inertia ixx="0.00081405" ixy="0.00003716" ixz="0.00000454" iyy="0.00067978" iyz="0.00000146" izz="0.00088822" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_shoulder_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_shoulder_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_shoulder_pitch" type="revolute">
+    <origin xyz="0 0.128 0.262" rpy="0 0 0" />
+    <parent link="waist_pitch_link" />
+    <child link="left_shoulder_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-2.09" upper="0.087" effort="66" velocity="3.56" />
+  </joint>
+  <link name="left_shoulder_roll_link">
+    <inertial>
+      <origin xyz="0.00071795 0.01532447 -0.08690955" rpy="0 0 0" />
+      <mass value="0.66444631" />
+      <inertia ixx="0.00124434" ixy="0.00000882" ixz="-0.00005003" iyy="0.00135463" iyz="0.00015519" izz="0.00050189" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_shoulder_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_shoulder_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_shoulder_roll" type="revolute">
+    <origin xyz="0 0.063 0" rpy="0 0 0" />
+    <parent link="left_shoulder_pitch_link" />
+    <child link="left_shoulder_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.52" upper="2.96" effort="66" velocity="3.56" />
+  </joint>
+  <link name="left_elbow_yaw_link">
+    <inertial>
+      <origin xyz="-0.00002131 -0.00082712 -0.09208447" rpy="0 0 0" />
+      <mass value="0.57830504" />
+      <inertia ixx="0.00085727" ixy="-0.00000030" ixz="-0.00000020" iyy="0.00083929" iyz="-0.00001291" izz="0.00027223" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_elbow_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_elbow_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_elbow_yaw" type="revolute">
+    <origin xyz="0 0.024745 -0.14034" rpy="0.17453 0 0" />
+    <parent link="left_shoulder_roll_link" />
+    <child link="left_elbow_yaw_link" />
+    <axis xyz="0 0 -1" />
+    <limit lower="-1.57" upper="1.57" effort="34" velocity="3.87" />
+  </joint>
+  <link name="left_elbow_pitch_link">
+    <inertial>
+      <origin xyz="0.00000000 -0.00022156 -0.06176005" rpy="0 0 0" />
+      <mass value="0.44339888" />
+      <inertia ixx="0.00049068" ixy="0.00000000" ixz="0.00000000" iyy="0.00042265" iyz="0.00000065" izz="0.00024339" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_elbow_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_elbow_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_elbow_pitch" type="revolute">
+    <origin xyz="0 0 -0.1075" rpy="0 0 0" />
+    <parent link="left_elbow_yaw_link" />
+    <child link="left_elbow_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.92" upper="0" effort="34" velocity="3.87" />
+  </joint>
+  <link name="left_wrist_yaw_link">
+    <inertial>
+      <origin xyz="0.00000000 0.02155652 -0.05963926" rpy="0 0 0" />
+      <mass value="0.47407100" />
+      <inertia ixx="0.00116949" ixy="0.00000000" ixz="-0.00000082" iyy="0.00108132" iyz="0.00021043" izz="0.00022588" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_wrist_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_wrist_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_wrist_yaw" type="revolute">
+    <origin xyz="0 0 -0.1035" rpy="0 0 0" />
+    <parent link="left_elbow_pitch_link" />
+    <child link="left_wrist_yaw_link" />
+    <axis xyz="0 0 -1" />
+    <limit lower="-3.14" upper="3.14" effort="11" velocity="4.18" />
+  </joint>
+  <link name="left_wrist_pitch_link">
+    <inertial>
+      <origin xyz="-0.00088336 0.00429195 0.00004034" rpy="0 0 0" />
+      <mass value="0.26743404" />
+      <inertia ixx="0.00007306" ixy="-0.00000766" ixz="0.00000028" iyy="0.00010240" iyz="0.00000006" izz="0.00012394" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_wrist_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_wrist_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_wrist_pitch" type="revolute">
+    <origin xyz="0 0 -0.1455" rpy="0 0 0" />
+    <parent link="left_wrist_yaw_link" />
+    <child link="left_wrist_pitch_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.52" upper="0.52" effort="4.8" velocity="4.71" />
+  </joint>
+  <link name="left_wrist_roll_link">
+    <inertial>
+      <origin xyz="0.00412842 0.00000000 -0.02733878" rpy="0 0 0" />
+      <mass value="0.03648018" />
+      <inertia ixx="0.00001166" ixy="0.00000000" ixz="-0.00000189" iyy="0.00002856" iyz="0.00000000" izz="0.00002417" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_wrist_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_wrist_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_wrist_roll" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="left_wrist_pitch_link" />
+    <child link="left_wrist_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1.57" upper="0" effort="4.8" velocity="4.71" />
+  </joint>
+  <!-- Left hand -->
+  <link name="left_hand_base_link">
+    <inertial>
+      <origin xyz="0.00125804982596889 0.00181115978340497 0.069441813384378" rpy="0 0 0" />
+      <mass value="0.38756" />
+      <inertia ixx="0.00059831308" ixy="-5.60829e-06" ixz="-2.8701399999999997e-06" iyy="0.00050077156" iyz="-3.4830999999999997e-06" izz="0.00018467082" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hand_base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_hand_base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_hand_base" type="fixed">
+    <origin xyz="0 0 -0.0370000000000005" rpy="3.1416 0 -1.5708" />
+    <parent link="left_wrist_roll_link" />
+    <child link="left_hand_base_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="left_thumb_1">
+    <inertial>
+      <origin xyz="0.000853471678482959 -0.00482215750222577 -0.0048200002860689" rpy="0 0 0" />
+      <mass value="0.00483" />
+      <inertia ixx="1.9502e-07" ixy="3.536e-08" ixz="3.1e-09" iyy="1.4336e-07" iyz="7.9e-09" izz="1.6891e-07" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_thumb_1_joint" type="revolute">
+    <origin xyz="0.01696 -0.02045 0.06635" rpy="0 0 0" />
+    <parent link="left_hand_base_link" />
+    <child link="left_thumb_1" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="1.246165" effort="50" velocity="1" />
+  </joint>
+  <link name="left_thumb_2">
+    <inertial>
+      <origin xyz="-0.0194665821577184 0.0163039156062457 -0.00803846870341951" rpy="0 0 0" />
+      <mass value="0.05759" />
+      <inertia ixx="1.0666209999999999e-05" ixy="4.413609999999999e-06" ixz="5.150000000000001e-09" iyy="8.92353e-06" iyz="-2.59e-09" izz="1.700133e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_thumb_2_joint" type="revolute">
+    <origin xyz="0.010735 -0.0090002 -0.0065" rpy="1.5708 0 1.8361" />
+    <parent link="left_thumb_1" />
+    <child link="left_thumb_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="0.48" effort="50" velocity="1" />
+  </joint>
+  <link name="left_thumb_3">
+    <inertial>
+      <origin xyz="-0.009466620350846 0.00207562096651074 -0.00719989129239992" rpy="0 0 0" />
+      <mass value="0.00985" />
+      <inertia ixx="1.21069e-06" ixy="1.0767e-07" ixz="1.0000000000000001e-11" iyy="6.011799999999999e-07" iyz="3e-11" izz="1.28966e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_thumb_3_joint" type="revolute">
+    <origin xyz="-0.037617 0.041486 -0.0008" rpy="0 0 0" />
+    <parent link="left_thumb_2" />
+    <child link="left_thumb_3" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="0.3578" effort="50" velocity="1" />
+    <mimic joint="left_thumb_2_joint" multiplier="1.1425" offset="0" />
+  </joint>
+  <link name="left_thumb_4">
+    <inertial>
+      <origin xyz="-0.00604903882220686 0.00861521192699925 -0.00600331217685268" rpy="0 0 0" />
+      <mass value="0.00552" />
+      <inertia ixx="3.1668e-07" ixy="4.536e-08" ixz="-1.0000000000000001e-11" iyy="1.2999000000000001e-07" iyz="-4e-10" izz="3.3747e-07" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_4.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_thumb_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_thumb_4_joint" type="revolute">
+    <origin xyz="-0.014957 0.017012 -0.0012" rpy="0 0 0" />
+    <parent link="left_thumb_3" />
+    <child link="left_thumb_4" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="0.2775" effort="50" velocity="1" />
+    <mimic joint="left_thumb_3_joint" multiplier="0.7508" offset="0" />
+  </joint>
+  <link name="left_index_1">
+    <inertial>
+      <origin xyz="0.0008527159848849 0.0119736084448001 0.00599989169039383" rpy="0 0 0" />
+      <mass value="0.012289999999999999" />
+      <inertia ixx="1.93998e-06" ixy="1.5035e-07" ixz="4.1e-10" iyy="5.6245e-07" iyz="3.49e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_index_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_index_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_index_1_joint" type="revolute">
+    <origin xyz="-0.00028533 -0.020275 0.13695" rpy="1.6057 0 0" />
+    <parent link="left_hand_base_link" />
+    <child link="left_index_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="left_index_2">
+    <inertial>
+      <origin xyz="0.00408344708691732 0.0192601764486991 0.00500003100756935" rpy="0 0 0" />
+      <mass value="0.00633" />
+      <inertia ixx="9.4327e-07" ixy="3.8912e-07" ixz="2.0000000000000002e-11" iyy="2.897e-07" iyz="5e-11" izz="1.14024e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_index_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_index_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_index_2_joint" type="revolute">
+    <origin xyz="0.0080993 0.031095 0.001" rpy="0 0 0" />
+    <parent link="left_index_1" />
+    <child link="left_index_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="left_index_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="left_middle_1">
+    <inertial>
+      <origin xyz="0.00085287755691596 0.0119736405947354 0.00599988891959347" rpy="0 0 0" />
+      <mass value="0.012289999999999999" />
+      <inertia ixx="1.94e-06" ixy="1.5036e-07" ixz="9.899999999999999e-10" iyy="5.6248e-07" iyz="5.01e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_middle_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_middle_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_middle_1_joint" type="revolute">
+    <origin xyz="-0.00028533 -0.00095 0.1371" rpy="1.5708 0 0" />
+    <parent link="left_hand_base_link" />
+    <child link="left_middle_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="left_middle_2">
+    <inertial>
+      <origin xyz="0.00471131608223271 0.0203464425452461 0.00500013550498847" rpy="0 0 0" />
+      <mass value="0.006809999999999999" />
+      <inertia ixx="1.18348e-06" ixy="5.0397e-07" ixz="0.0" iyy="3.558e-07" iyz="0.0" izz="1.43878e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_middle_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_middle_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_middle_2_joint" type="revolute">
+    <origin xyz="0.0080996 0.031095 0.001" rpy="0 0 0" />
+    <parent link="left_middle_1" />
+    <child link="left_middle_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="left_middle_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="left_ring_1">
+    <inertial>
+      <origin xyz="0.000852611292407851 0.0119736634067538 0.00599988335942421" rpy="0 0 0" />
+      <mass value="0.012289999999999999" />
+      <inertia ixx="1.93998e-06" ixy="1.5033000000000002e-07" ixz="5.1e-10" iyy="5.6244e-07" iyz="3.52e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ring_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ring_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_ring_1_joint" type="revolute">
+    <origin xyz="-0.00028533 0.018271 0.13628" rpy="1.5184 0 0" />
+    <parent link="left_hand_base_link" />
+    <child link="left_ring_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="left_ring_2">
+    <inertial>
+      <origin xyz="0.00408299506259779 0.0192602956948013 0.00500000332159135" rpy="0 0 0" />
+      <mass value="0.00633" />
+      <inertia ixx="9.4329e-07" ixy="3.8762e-07" ixz="3.394e-08" iyy="2.9614999999999996e-07" iyz="7.389e-08" izz="1.13377e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ring_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_ring_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_ring_2_joint" type="revolute">
+    <origin xyz="0.0080989 0.031095 0.001" rpy="0 0 0" />
+    <parent link="left_ring_1" />
+    <child link="left_ring_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="left_ring_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="left_little_1">
+    <inertial>
+      <origin xyz="0.000851752984712406 0.0119737230065286 0.00599988919520877" rpy="0 0 0" />
+      <mass value="0.012289999999999999" />
+      <inertia ixx="1.94e-06" ixy="1.5023e-07" ixz="3e-10" iyy="5.624199999999999e-07" iyz="3.18e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_little_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_little_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_little_1_joint" type="revolute">
+    <origin xyz="-0.00028533 0.037422 0.13446" rpy="1.4661 0 0" />
+    <parent link="left_hand_base_link" />
+    <child link="left_little_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="left_little_2">
+    <inertial>
+      <origin xyz="0.00273890807896854 0.0161632709360688 0.00500586036971424" rpy="0 0 0" />
+      <mass value="0.00525" />
+      <inertia ixx="5.5787e-07" ixy="2.175e-07" ixz="0.0" iyy="1.8624e-07" iyz="0.0" izz="6.690599999999999e-07" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_little_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/left_little_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_little_2_joint" type="revolute">
+    <origin xyz="0.0080966 0.031096 0.001" rpy="0 0 0" />
+    <parent link="left_little_1" />
+    <child link="left_little_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="left_little_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="right_shoulder_pitch_link">
+    <inertial>
+      <origin xyz="-0.00551209 -0.05756836 -0.00021786" rpy="0 0 0" />
+      <mass value="0.94519295" />
+      <inertia ixx="0.00081285" ixy="-0.00003429" ixz="-0.00000487" iyy="0.00067739" iyz="0.00000018" izz="0.00088941" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_shoulder_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_shoulder_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_shoulder_pitch" type="revolute">
+    <origin xyz="0 -0.12785 0.262" rpy="0 0 0" />
+    <parent link="waist_pitch_link" />
+    <child link="right_shoulder_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.087" upper="2.09" effort="66" velocity="3.56" />
+  </joint>
+  <link name="right_shoulder_roll_link">
+    <inertial>
+      <origin xyz="0.00071795 -0.01532453 -0.08690952" rpy="0 0 0" />
+      <mass value="0.66444631" />
+      <inertia ixx="0.00124434" ixy="-0.00000882" ixz="-0.00005003" iyy="0.00135463" iyz="-0.00015518" izz="0.00050189" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_shoulder_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_shoulder_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_shoulder_roll" type="revolute">
+    <origin xyz="0 -0.06315 0" rpy="0 0 0" />
+    <parent link="right_shoulder_pitch_link" />
+    <child link="right_shoulder_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="-2.96" upper="0.52" effort="66" velocity="3.56" />
+  </joint>
+  <link name="right_elbow_yaw_link">
+    <inertial>
+      <origin xyz="-0.00002184 0.00082712 -0.09209270" rpy="0 0 0" />
+      <mass value="0.57830504" />
+      <inertia ixx="0.00085743" ixy="0.00000032" ixz="-0.00000017" iyy="0.00083943" iyz="0.00001316" izz="0.00027222" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_elbow_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_elbow_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_elbow_yaw" type="revolute">
+    <origin xyz="0 -0.024745 -0.14034" rpy="-0.17453 0 0" />
+    <parent link="right_shoulder_roll_link" />
+    <child link="right_elbow_yaw_link" />
+    <axis xyz="0 0 -1" />
+    <limit lower="-1.57" upper="1.57" effort="34" velocity="3.87" />
+  </joint>
+  <link name="right_elbow_pitch_link">
+    <inertial>
+      <origin xyz="0.00000000 0.00022157 -0.06176006" rpy="0 0 0" />
+      <mass value="0.44339888" />
+      <inertia ixx="0.00049068" ixy="0.00000000" ixz="0.00000000" iyy="0.00042265" iyz="-0.00000065" izz="0.00024339" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_elbow_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_elbow_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_elbow_pitch" type="revolute">
+    <origin xyz="0 0 -0.1075" rpy="0 0 0" />
+    <parent link="right_elbow_yaw_link" />
+    <child link="right_elbow_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0" upper="2.6" effort="34" velocity="3.87" />
+  </joint>
+  <link name="right_wrist_yaw_link">
+    <inertial>
+      <origin xyz="0.00000000 -0.02155652 -0.05963926" rpy="0 0 0" />
+      <mass value="0.47407100" />
+      <inertia ixx="0.00116994" ixy="0.00000000" ixz="0.00000236" iyy="0.00108132" iyz="-0.00021043" izz="0.00022544" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_wrist_yaw_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_wrist_yaw_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_wrist_yaw" type="revolute">
+    <origin xyz="0 0 -0.1035" rpy="0 0 0" />
+    <parent link="right_elbow_pitch_link" />
+    <child link="right_wrist_yaw_link" />
+    <axis xyz="0 0 -1" />
+    <limit lower="-3.14" upper="3.14" effort="11" velocity="4.18" />
+  </joint>
+  <link name="right_wrist_pitch_link">
+    <inertial>
+      <origin xyz="-0.00088377 -0.00430880 -0.00003314" rpy="0 0 0" />
+      <mass value="0.26743404" />
+      <inertia ixx="0.00007302" ixy="0.00000754" ixz="-0.00000022" iyy="0.00010243" iyz="0.00000007" izz="0.00012389" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_wrist_pitch_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_wrist_pitch_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_wrist_pitch" type="revolute">
+    <origin xyz="0 -0.0005 -0.1455" rpy="0 0 0" />
+    <parent link="right_wrist_yaw_link" />
+    <child link="right_wrist_pitch_link" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.52" upper="0.52" effort="4.8" velocity="4.71" />
+  </joint>
+  <link name="right_wrist_roll_link">
+    <inertial>
+      <origin xyz="0.00412842 0.00000000 -0.02733878" rpy="0 0 0" />
+      <mass value="0.03648018" />
+      <inertia ixx="0.00001166" ixy="0.00000000" ixz="-0.00000189" iyy="0.00002856" iyz="0.00000000" izz="0.00002417" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_wrist_roll_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_wrist_roll_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_wrist_roll" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="right_wrist_pitch_link" />
+    <child link="right_wrist_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit lower="0" upper="1.57" effort="4.8" velocity="4.71" />
+  </joint>
+  <!-- Right hand -->
+  <link name="right_hand_base_link">
+    <inertial>
+      <origin xyz="0.00252515168164585 -0.001960054926157 0.0660467739648412" rpy="0 0 0" />
+      <mass value="0.38756" />
+      <inertia ixx="0.00059831308" ixy="5.60829e-06" ixz="2.8701399999999997e-06" iyy="0.00050077156" iyz="3.4830999999999997e-06" izz="0.00018467082" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hand_base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_hand_base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_hand_base" type="fixed">
+    <origin xyz="0 0 -0.0369999999999999" rpy="3.1416 0 1.5708" />
+    <parent link="right_wrist_roll_link" />
+    <child link="right_hand_base_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="right_thumb_1">
+    <inertial>
+      <origin xyz="0.000853491366153925 0.00482216769884483 -0.00481999614705116" rpy="0 0 0" />
+      <mass value="0.00483" />
+      <inertia ixx="1.9502e-07" ixy="-3.536e-08" ixz="-3.1e-09" iyy="1.4336e-07" iyz="-7.9e-09" izz="1.6891e-07" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_thumb_1_joint" type="revolute">
+    <origin xyz="0.0169600000000007 0.020450000002209 0.0663500000000002" rpy="0 0 0" />
+    <parent link="right_hand_base_link" />
+    <child link="right_thumb_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.246165" effort="50" velocity="1" />
+  </joint>
+  <link name="right_thumb_2">
+    <inertial>
+      <origin xyz="0.0194641293930403 0.0162980383727088 -0.00803857337744943" rpy="0 0 0" />
+      <mass value="0.05759" />
+      <inertia ixx="1.0666209999999999e-05" ixy="-4.413609999999999e-06" ixz="-5.150000000000001e-09" iyy="8.92353e-06" iyz="2.59e-09" izz="1.700133e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_thumb_2_joint" type="revolute">
+    <origin xyz="0.0107353075101483 0.00900017625730479 -0.00649999999999998" rpy="1.57079632679489 0 1.30550628049177" />
+    <parent link="right_thumb_1" />
+    <child link="right_thumb_2" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.48" effort="50" velocity="1" />
+  </joint>
+  <link name="right_thumb_3">
+    <inertial>
+      <origin xyz="0.00946651884646355 0.00207630823866701 -0.00720000588824668" rpy="0 0 0" />
+      <mass value="0.00378440898138893" />
+      <inertia ixx="1.21069e-06" ixy="-1.0767e-07" ixz="-1.0000000000000001e-11" iyy="6.011799999999999e-07" iyz="-3e-11" izz="1.28966e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_thumb_3_joint" type="revolute">
+    <origin xyz="0.0376167925538582 0.0414855421501229 -0.000800000000000356" rpy="0 0 0" />
+    <parent link="right_thumb_2" />
+    <child link="right_thumb_3" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.3578" effort="50" velocity="1" />
+    <mimic joint="right_thumb_2_joint" multiplier="1.1425" offset="0" />
+  </joint>
+  <link name="right_thumb_4">
+    <inertial>
+      <origin xyz="0.00604904909827651 0.00861522746372045 -0.00600329390500667" rpy="0 0 0" />
+      <mass value="0.00552" />
+      <inertia ixx="3.1668e-07" ixy="-4.536e-08" ixz="1.0000000000000001e-11" iyy="1.2999000000000001e-07" iyz="4e-10" izz="3.3747e-07" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_4.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_thumb_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_thumb_4_joint" type="revolute">
+    <origin xyz="0.0149571022375899 0.0170124132550165 -0.00120000000000001" rpy="0 0 0" />
+    <parent link="right_thumb_3" />
+    <child link="right_thumb_4" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.2775" effort="50" velocity="1" />
+    <mimic joint="right_thumb_3_joint" multiplier="0.7508" offset="0" />
+  </joint>
+  <link name="right_index_1">
+    <inertial>
+      <origin xyz="0.000852715296526529 0.0119735955318245 -0.00599986563267159" rpy="0 0 0" />
+      <mass value="0.01229" />
+      <inertia ixx="1.93998e-06" ixy="-1.5035e-07" ixz="-4.1e-10" iyy="5.6245e-07" iyz="-3.49e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_index_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_index_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_index_1_joint" type="revolute">
+    <origin xyz="-0.000285333323388565 0.0202750317161709 0.136945958498439" rpy="1.53588974175501 0 0" />
+    <parent link="right_hand_base_link" />
+    <child link="right_index_1" />
+    <axis xyz="0 -0.0697564737441209 -0.997564050259825" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="right_index_2">
+    <inertial>
+      <origin xyz="0.00408342999190195 0.0192600939391442 -0.00500000380847467" rpy="0 0 0" />
+      <mass value="0.00633" />
+      <inertia ixx="9.4327e-07" ixy="-3.8912e-07" ixz="-2.0000000000000002e-11" iyy="2.897e-07" iyz="-5e-11" izz="1.14024e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_index_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_index_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_index_2_joint" type="revolute">
+    <origin xyz="0.0080992697963248 0.0310949249595195 -0.001" rpy="0 0 0" />
+    <parent link="right_index_1" />
+    <child link="right_index_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="right_index_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="right_middle_1">
+    <inertial>
+      <origin xyz="0.000852855866232599 0.011973606798452 -0.00399984588006246" rpy="0 0 0" />
+      <mass value="0.01229" />
+      <inertia ixx="1.94e-06" ixy="-1.5036e-07" ixz="-9.899999999999999e-10" iyy="5.6248e-07" iyz="-5.01e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_middle_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_middle_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_middle_1_joint" type="revolute">
+    <origin xyz="-0.000285333314556269 0.00295000000023597 0.137100000000016" rpy="1.5707963267792 0 0" />
+    <parent link="right_hand_base_link" />
+    <child link="right_middle_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="right_middle_2">
+    <inertial>
+      <origin xyz="0.0047113458880482 0.0203465768773643 -0.00500003269708214" rpy="0 0 0" />
+      <mass value="0.00681" />
+      <inertia ixx="1.18348e-06" ixy="-5.0397e-07" ixz="-0.0" iyy="3.558e-07" iyz="-0.0" izz="1.43878e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_middle_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_middle_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_middle_2_joint" type="revolute">
+    <origin xyz="0.00809959893697584 0.0310948392266618 0.00100000000000044" rpy="0 0 0" />
+    <parent link="right_middle_1" />
+    <child link="right_middle_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="right_middle_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="right_ring_1">
+    <inertial>
+      <origin xyz="0.00085245845917839 0.0119734648811593 -0.00599989251266642" rpy="0 0 0" />
+      <mass value="0.01229" />
+      <inertia ixx="1.93998e-06" ixy="-1.5033000000000002e-07" ixz="-5.1e-10" iyy="5.6244e-07" iyz="-3.52e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ring_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ring_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_ring_1_joint" type="revolute">
+    <origin xyz="-0.000285333323395365 -0.0182707111726564 0.136282456905841" rpy="1.62315620435472 0 0" />
+    <parent link="right_hand_base_link" />
+    <child link="right_ring_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="right_ring_2">
+    <inertial>
+      <origin xyz="0.00408287363348225 0.0192599767415159 -0.00499998343104271" rpy="0 0 0" />
+      <mass value="0.00633" />
+      <inertia ixx="9.4329e-07" ixy="-3.8762e-07" ixz="-3.394e-08" iyy="2.9614999999999996e-07" iyz="-7.389e-08" izz="1.13377e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ring_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_ring_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_ring_2_joint" type="revolute">
+    <origin xyz="0.00809885846186154 0.0310950320965672 -0.001" rpy="0 0 0" />
+    <parent link="right_ring_1" />
+    <child link="right_ring_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="right_ring_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+  <link name="right_little_1">
+    <inertial>
+      <origin xyz="0.000851610973032574 0.0119735303202265 -0.00599989467442243" rpy="0 0 0" />
+      <mass value="0.012289999999999999" />
+      <inertia ixx="1.94e-06" ixy="-1.5023e-07" ixz="-3e-10" iyy="5.624199999999999e-07" iyz="-3.18e-09" izz="2.05872e-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_little_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_little_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_little_1_joint" type="revolute">
+    <origin xyz="-0.000285333323391146 -0.0374222941312603 0.134460099927073" rpy="1.67551608191454 0 0" />
+    <parent link="right_hand_base_link" />
+    <child link="right_little_1" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.333" effort="50" velocity="1" />
+  </joint>
+  <link name="right_little_2">
+    <inertial>
+      <origin xyz="0.00273929963119374 0.0161600317264199 -0.00499667765900381" rpy="0 0 0" />
+      <mass value="0.00525" />
+      <inertia ixx="5.5787e-07" ixy="-2.175e-07" ixz="-0.0" iyy="1.8624e-07" iyz="-0.0" izz="6.690599999999999e-07" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_little_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://t170a_description/meshes/right_little_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_little_2_joint" type="revolute">
+    <origin xyz="0.0080966 0.031096 -0.001" rpy="0 0 0" />
+    <parent link="right_little_1" />
+    <child link="right_little_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="0" upper="1.527" effort="50" velocity="1" />
+    <mimic joint="right_little_1_joint" multiplier="1.1169" offset="0" />
+  </joint>
+</robot>
