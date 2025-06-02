@@ -13,9 +13,9 @@ from scipy.spatial.transform import Rotation as R
 class PoseIKController(Node):
     def __init__(self):
         super().__init__('pose_ik_controller')
-        self.set_parameters([rclpy.parameter.Parameter('use_sim_time',
-                                                       rclpy.Parameter.Type.BOOL,
-                                                       True)])
+        # self.set_parameters([rclpy.parameter.Parameter('use_sim_time',
+        #                                                rclpy.Parameter.Type.BOOL,
+        #                                                True)])
 
         self.current_joint_state = [None] * 7
         self.latest_pose_msg = None
@@ -87,10 +87,6 @@ class PoseIKController(Node):
         self.frame_id = self.model.getFrameId(self.frame_name)
         self.joint_id = self.model.frames[self.frame_id].parentJoint
 
-        # rate = self.create_rate(2.0)
-        # while rclpy.ok() and self.current_joint_state == [0.0] * 7:
-        #     rate.sleep()
-        # q = np.array(self.current_joint_state)
         pin.loadReferenceConfigurations(self.model, srdf_model_path)
         self.q_home = self.model.referenceConfigurations["right_home"]
         q = self.q_home

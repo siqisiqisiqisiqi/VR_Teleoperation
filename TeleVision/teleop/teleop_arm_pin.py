@@ -75,9 +75,9 @@ class VuerTeleop:
 class RosBridge(Node):
     def __init__(self):
         super().__init__('teleop_image_bridge')
-        self.set_parameters([rclpy.parameter.Parameter('use_sim_time',
-                                                       rclpy.Parameter.Type.BOOL,
-                                                       True)])
+        # self.set_parameters([rclpy.parameter.Parameter('use_sim_time',
+        #                                                rclpy.Parameter.Type.BOOL,
+        #                                                True)])
         self.bridge = CvBridge()
         self.left_image = None
         self.right_image = None
