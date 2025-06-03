@@ -166,7 +166,7 @@ class PoseIKController(Node):
         dq_null = P_null @ dq_null_desired
 
         v = v_task + dq_null
-        q_next = pin.integrate(self.model, q_measured, v * 0.5)
+        q_next = pin.integrate(self.model, q_measured, v * 1.0)
 
         # Step 4: publish joint command
         msg = JointState()

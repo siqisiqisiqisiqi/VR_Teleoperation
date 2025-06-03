@@ -30,9 +30,7 @@ class InitialPosePublisher(Node):
 
     def publish_initial_joint_command(self):
         time.sleep(1)
-        # p1 = [0.11, 0.12, 1.57, 1.30, 0.06, 0.16, 0.11]
         p1 = [0.00, -0.8, 0.5, 1.1, 0.06, 0.16, 0.11]
-        # p2 = [0.84, -0.006, -0.27, 1.06, 0.14, 0.03, 0.00]
         p2 = [0.00, -0.75, 0.14, 1.77, 1.09, 0.00, 0.00]
         msg = JointState()
         msg.name = [

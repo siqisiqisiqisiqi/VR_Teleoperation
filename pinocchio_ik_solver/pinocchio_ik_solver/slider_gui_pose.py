@@ -17,11 +17,11 @@ class PoseSliderGUI(QWidget):
     def __init__(self, initial_pose):
         super().__init__()
         self.names = ["x", "y", "z", "roll", "pitch", "yaw", "hand"]
-        self.max_vals = [1.0, 1.0, 1.0, 180, 180, 180, 1]
-        self.min_vals = [-1.0, -1.0, -1.0, -180, -180, -180, 0]
+        self.max_vals = [0.5, -0.1, 0.5, 180, 180, 180, 1]
+        self.min_vals = [0.2, -0.55, 0.2, -180, -180, -180, 0]
         self.sliders = []
         self.labels = []
-        self.initial_pose = initial_pose + [1]
+        self.initial_pose = initial_pose + [0]
         self.init_ui()
 
     def init_ui(self):
