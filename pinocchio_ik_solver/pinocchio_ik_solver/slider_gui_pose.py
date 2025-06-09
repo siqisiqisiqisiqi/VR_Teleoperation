@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt, QTimer
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool
+from std_msgs.msg import String
 from geometry_msgs.msg import Pose
 from tf2_msgs.msg import TFMessage
 from sensor_msgs.msg import JointState
@@ -23,6 +23,7 @@ class PoseSliderGUI(QWidget):
         self.sliders = []
         self.labels = []
         self.initial_pose = initial_pose + [0]
+        self.start_callback = None
         self.stop_callback = None
         self.init_ui()
 
@@ -63,7 +64,12 @@ class PoseSliderGUI(QWidget):
                 layout.addWidget(slider)
                 self.sliders.append(slider)
 
-        # Add complete button
+        # Add Start button
+        self.start_button = QPushButton("▶ Start Episode")
+        self.start_button.clicked.connect(self.emit_start_signal)
+        layout.addWidget(self.start_button)
+
+        # Add Stop button
         self.complete_button = QPushButton("✅ Episode Complete")
         self.complete_button.clicked.connect(self.emit_stop_signal)
         layout.addWidget(self.complete_button)
@@ -82,8 +88,15 @@ class PoseSliderGUI(QWidget):
                 values.append(real_val)
         return values
 
+    def set_start_callback(self, callback):
+        self.start_callback = callback
+
     def set_stop_callback(self, callback):
         self.stop_callback = callback
+
+    def emit_start_signal(self):
+        if self.start_callback:
+            self.start_callback()
 
     def emit_stop_signal(self):
         if self.stop_callback:
@@ -120,10 +133,10 @@ class PosePublisherNode(Node):
         self.publisher_ = self.create_publisher(Pose, '/hand_pose_ik', 10)
         self.hand_publisher_ = self.create_publisher(
             JointState, 'joint_command', 10)
-        # self.hand_state_publisher_ = self.create_publisher(
-        #     Bool, 'hand_state', 10)
-        self.stop_publisher_ = self.create_publisher(Bool, '/stop', 10)
+        self.trigger_publisher_ = self.create_publisher(
+            String, '/recording_trigger', 10)
 
+        self.gui.set_start_callback(self.publish_start_signal)
         self.gui.set_stop_callback(self.publish_stop_signal)
 
         self.timer = QTimer()
@@ -147,7 +160,7 @@ class PosePublisherNode(Node):
             "right_ring_1_joint", "right_thumb_1_joint", "right_thumb_2_joint"
         ]
         finger_positions = [0.55, 0.80, 0.6, 0.60,
-                            1.16, 0.13] if hand_state else [0.0] * 6
+                            1.16, 0.13] if hand_state else [0.0, 0.0, 0.0, 0.0, 1.2, 0.0]
 
         hand_msg = JointState()
         hand_msg.header.stamp = self.get_clock().now().to_msg()
@@ -155,11 +168,17 @@ class PosePublisherNode(Node):
         hand_msg.position = finger_positions
         self.hand_publisher_.publish(hand_msg)
 
+    def publish_start_signal(self):
+        msg = String()
+        msg.data = "start"
+        self.trigger_publisher_.publish(msg)
+        self.get_logger().info("▶ Published 'start' on /recording_trigger")
+
     def publish_stop_signal(self):
-        msg = Bool()
-        msg.data = True
-        self.stop_publisher_.publish(msg)
-        self.get_logger().info("✅ Published stop signal on /stop")
+        msg = String()
+        msg.data = "stop"
+        self.trigger_publisher_.publish(msg)
+        self.get_logger().info("✅ Published 'stop' on /recording_trigger")
 
 
 def wait_for_initial_pose():

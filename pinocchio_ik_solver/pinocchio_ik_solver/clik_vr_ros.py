@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import pathlib
 import rclpy
 from rclpy.node import Node
@@ -142,13 +143,13 @@ class PoseIKController(Node):
         rpy_current = R.from_matrix(
             rotation_matrix).as_euler('xyz', degrees=False)
         current_quat = R.from_euler('xyz', rpy_current).as_quat()
-        print("📌 Pinocchio EE pose:")
-        print("desired  Translation:", translation)
-        print("current  Translation:", T.translation)
-        print(
-            f"desired quat: x={ori.x:.2f}, y={ori.y:.2f}, z={ori.z:.2f}, w={ori.w:.2f}")
-        print(
-            f"current quat: x={current_quat[0]:.2f}, y={current_quat[1]:.2f}, z={current_quat[2]:.2f}, w={current_quat[3]:.2f}")
+        # print("📌 Pinocchio EE pose:")
+        # print("desired  Translation:", translation)
+        # print("current  Translation:", T.translation)
+        # print(
+        #     f"desired quat: x={ori.x:.2f}, y={ori.y:.2f}, z={ori.z:.2f}, w={ori.w:.2f}")
+        # print(
+        #     f"current quat: x={current_quat[0]:.2f}, y={current_quat[1]:.2f}, z={current_quat[2]:.2f}, w={current_quat[3]:.2f}")
         if np.linalg.norm(err) < 1e-3:
             self.get_logger().info("arrved at the target position!")
             return

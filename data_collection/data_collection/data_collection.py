@@ -6,9 +6,10 @@ import re
 import numpy as np
 from rclpy.node import Node
 import rclpy
+import time
 from sensor_msgs.msg import Image, JointState
 from geometry_msgs.msg import Pose
-from std_msgs.msg import Bool
+from std_msgs.msg import String
 from tf2_msgs.msg import TFMessage
 from cv_bridge import CvBridge
 from threading import Lock
@@ -32,7 +33,7 @@ class DataCollector(Node):
         self.current_action = None
         self.cam_left = None
         self.cam_right = None
-        self.stop = False
+        self.state = "wait"
 
         # Subscriptions
         self.create_subscription(
@@ -46,7 +47,8 @@ class DataCollector(Node):
             Image, '/rgb_left', self.left_image_callback, 10)
         self.create_subscription(
             Image, '/rgb_right', self.right_image_callback, 10)
-        self.create_subscription(Bool, '/stop', self.stop_callback, 10)
+        self.create_subscription(
+            String, '/recording_trigger', self.state_callback, 10)
 
         # For action
         self.ee_pose = None
@@ -72,9 +74,9 @@ class DataCollector(Node):
         self.timer = self.create_timer(
             1.0 / self.timer_freq, self.record_callback)
 
-    def stop_callback(self, msg):
-        self.stop = msg.data
-        self.get_logger().info(f"Completed one episode!")
+    def state_callback(self, msg):
+        self.state = msg.data
+        self.get_logger().info(f"The recording state is {self.state}.")
 
     def tf_callback(self, msg):
         if not msg.transforms:
@@ -139,6 +141,9 @@ class DataCollector(Node):
         }
 
     def record_callback(self):
+        if self.state == "wait":
+            time.sleep(0.2)
+            return
         state = self.get_state()
         action = self.get_action()
         images = self.get_camera_images()
@@ -156,7 +161,7 @@ class DataCollector(Node):
             f"Recording step {self.frame_idx}: action={action}")
         self.frame_idx = self.frame_idx + 1
 
-        if self.stop:  # example episode length
+        if self.state == "stop":  # example episode length
             filename = os.path.join(
                 self.save_dir, f"episode_{self.episode_idx:03d}.pkl")
             with open(filename, 'wb') as f:
