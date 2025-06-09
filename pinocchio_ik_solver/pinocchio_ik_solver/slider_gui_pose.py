@@ -2,11 +2,12 @@
 import sys
 import numpy as np
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QSlider, QLabel, QCheckBox
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QSlider, QLabel, QCheckBox, QPushButton
 from PyQt5.QtCore import Qt, QTimer
 
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Bool
 from geometry_msgs.msg import Pose
 from tf2_msgs.msg import TFMessage
 from sensor_msgs.msg import JointState
@@ -22,6 +23,7 @@ class PoseSliderGUI(QWidget):
         self.sliders = []
         self.labels = []
         self.initial_pose = initial_pose + [0]
+        self.stop_callback = None
         self.init_ui()
 
     def init_ui(self):
@@ -61,6 +63,11 @@ class PoseSliderGUI(QWidget):
                 layout.addWidget(slider)
                 self.sliders.append(slider)
 
+        # Add complete button
+        self.complete_button = QPushButton("✅ Episode Complete")
+        self.complete_button.clicked.connect(self.emit_stop_signal)
+        layout.addWidget(self.complete_button)
+
         self.setLayout(layout)
 
     def get_slider_values(self):
@@ -74,6 +81,13 @@ class PoseSliderGUI(QWidget):
                     (self.max_vals[i] - self.min_vals[i])
                 values.append(real_val)
         return values
+
+    def set_stop_callback(self, callback):
+        self.stop_callback = callback
+
+    def emit_stop_signal(self):
+        if self.stop_callback:
+            self.stop_callback()
 
 
 class TFListenerNode(Node):
@@ -106,6 +120,12 @@ class PosePublisherNode(Node):
         self.publisher_ = self.create_publisher(Pose, '/hand_pose_ik', 10)
         self.hand_publisher_ = self.create_publisher(
             JointState, 'joint_command', 10)
+        # self.hand_state_publisher_ = self.create_publisher(
+        #     Bool, 'hand_state', 10)
+        self.stop_publisher_ = self.create_publisher(Bool, '/stop', 10)
+
+        self.gui.set_stop_callback(self.publish_stop_signal)
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.publish_pose)
         self.timer.start(50)  # 20 Hz
@@ -115,29 +135,31 @@ class PosePublisherNode(Node):
         position = values[:3]
         rpy = values[3:6]
         q = R.from_euler('xyz', rpy, degrees=True).as_quat()
-        hand_state = int(round(values[6]))  # ensure 0 or 1
+        hand_state = int(round(values[6]))
 
-        # Send hand pose
         pose_msg = Pose()
         pose_msg.position.x, pose_msg.position.y, pose_msg.position.z = position
         pose_msg.orientation.x, pose_msg.orientation.y, pose_msg.orientation.z, pose_msg.orientation.w = q
         self.publisher_.publish(pose_msg)
 
-        # Send finger command
         joint_names = [
             "right_index_1_joint", "right_little_1_joint", "right_middle_1_joint",
             "right_ring_1_joint", "right_thumb_1_joint", "right_thumb_2_joint"
         ]
-        if hand_state:
-            finger_positions = [0.55, 0.80, 0.6, 0.60, 1.16, 0.13]
-        else:
-            finger_positions = [0.0, 0.0, 0.0, 0.0, 1.2, 0.0]
+        finger_positions = [0.55, 0.80, 0.6, 0.60,
+                            1.16, 0.13] if hand_state else [0.0] * 6
 
         hand_msg = JointState()
         hand_msg.header.stamp = self.get_clock().now().to_msg()
         hand_msg.name = joint_names
         hand_msg.position = finger_positions
         self.hand_publisher_.publish(hand_msg)
+
+    def publish_stop_signal(self):
+        msg = Bool()
+        msg.data = True
+        self.stop_publisher_.publish(msg)
+        self.get_logger().info("✅ Published stop signal on /stop")
 
 
 def wait_for_initial_pose():
