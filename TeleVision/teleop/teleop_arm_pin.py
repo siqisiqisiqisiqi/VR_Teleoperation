@@ -103,7 +103,7 @@ class RosBridge(Node):
         )
 
         self.publisher_ = self.create_publisher(
-            JointState, 'joint_command', 10)
+            JointState, '/vr_joint', 10)
         self.hand_pos_pub = self.create_publisher(Pose, '/hand_pose', 10)
         self.hand_pos_ik_pub = self.create_publisher(Pose, '/hand_pose_ik', 10)
 

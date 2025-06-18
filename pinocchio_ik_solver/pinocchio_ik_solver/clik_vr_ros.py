@@ -7,7 +7,6 @@ from sensor_msgs.msg import JointState
 from geometry_msgs.msg import Pose
 import numpy as np
 import pinocchio as pin
-from std_msgs.msg import Bool
 import time
 from scipy.spatial.transform import Rotation as R
 
@@ -22,6 +21,7 @@ class PoseIKController(Node):
         self.current_joint_state = [None] * 7
         self.latest_pose_msg = None
         self.hand_state = True
+        self.vr_joint = None
 
         self.target_joint_names = [
             "right_shoulder_pitch", "right_shoulder_roll",
@@ -48,8 +48,14 @@ class PoseIKController(Node):
             JointState, '/joint_command', 10)
         self.create_subscription(
             JointState, '/joint_states_isaac', self.joint_state_callback, 10)
+        self.create_subscription(
+            JointState, '/vr_joint', self.vr_joint_callback, 10)
         self.create_subscription(Pose, '/hand_pose_ik', self.pose_callback, 10)
         self.get_logger().info("ros setup completed!")
+
+    def vr_joint_callback(self, msg):
+        # receive the joint command from the VR for head and finger
+        self.vr_joint = msg
 
     def joint_state_callback(self, msg):
         position = msg.position
@@ -180,13 +186,11 @@ class PoseIKController(Node):
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.name = self.ordered_joint_names
         msg.position = list(q_next)
-        self.publisher.publish(msg)
 
-        # hand_config = [0.80, 0.75, 0.75, 0.75, 1.20,
-        #                0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
-        # msg.name = self.ordered_joint_names + self.hand_joint_names
-        # msg.position = list(q_next) + hand_config
-        # self.publisher.publish(msg)
+        if self.vr_joint is not None:
+            msg.name += self.vr_joint.name
+            msg.position += self.vr_joint.position
+        self.publisher.publish(msg)
 
 
 def main(args=None):

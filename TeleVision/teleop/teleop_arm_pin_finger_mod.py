@@ -102,8 +102,8 @@ class RosBridge(Node):
             10  # QoS profile
         )
 
-        self.publisher_ = self.create_publisher(
-            JointState, 'joint_command', 10)
+        self.publisher_ = self.create_publisher(JointState, '/vr_joint', 10)
+        # topic to visualize the real hand pose in simulation
         self.hand_pos_pub = self.create_publisher(Pose, '/hand_pose', 10)
         self.hand_pos_ik_pub = self.create_publisher(Pose, '/hand_pose_ik', 10)
 
