@@ -30,8 +30,9 @@ class InitialPosePublisher(Node):
 
     def publish_initial_joint_command(self):
         time.sleep(1)
-        p1 = [0.00, -0.8, 0.5, 1.1, 0.06, 0.16, 0.11]
-        p2 = [0.00, -0.75, 0.14, 1.77, 1.09, 0.00, 0.00]
+        p1 = [0.10, -0.85, 0.5, 1.15, 0.06, 0.16, 0.11]
+        # p2 = [0.00, -0.75, 0.14, 1.77, 1.09, 0.00, 0.00]
+        p2 = [0.14, -0.41, 0.01, 1.74, 0.58, -0.13, -0.00]
         msg = JointState()
         msg.name = [
             "right_shoulder_pitch", "right_shoulder_roll",
@@ -44,7 +45,14 @@ class InitialPosePublisher(Node):
         self.get_logger().info('Send the first pos!!!')
         time.sleep(2)
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.position = p2
+        finger_position = [0.0] * 4 + [1.2, 0.0]
+        msg.position = p2 + finger_position
+        finger_name = [
+            "right_index_1_joint", "right_little_1_joint", "right_middle_1_joint",
+            "right_ring_1_joint", "right_thumb_1_joint", "right_thumb_2_joint"
+        ]
+
+        msg.name += finger_name
         self.publisher.publish(msg)
         self.get_logger().info('Send the second pos!!!')
 

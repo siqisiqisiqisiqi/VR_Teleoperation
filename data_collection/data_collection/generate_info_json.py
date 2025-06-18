@@ -63,7 +63,7 @@ info = {
 for cam in CAMERA_KEYS:
     info["features"][f"observation.images.{cam}"] = {
         "dtype": "video",
-        "shape": [480, 640, 3],
+        "shape": [360, 640, 3],
         "names": ["height", "width", "channel"],
         "video_info": {
             "video.fps": FPS,

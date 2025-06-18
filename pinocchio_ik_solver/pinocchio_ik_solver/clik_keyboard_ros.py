@@ -49,7 +49,12 @@ class PoseIKController(Node):
         self.create_subscription(
             JointState, '/joint_states_isaac', self.joint_state_callback, 10)
         self.create_subscription(Pose, '/hand_pose_ik', self.pose_callback, 10)
+        self.create_subscription(
+            Bool, '/hand_state', self.hand_state_callback, 10)
         self.get_logger().info("ros setup completed!")
+
+    def hand_state_callback(self, msg):
+        self.hand_state = msg.data
 
     def joint_state_callback(self, msg):
         position = msg.position
@@ -178,15 +183,15 @@ class PoseIKController(Node):
         # Step 4: publish joint command
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.name = self.ordered_joint_names
-        msg.position = list(q_next)
-        self.publisher.publish(msg)
-
-        # hand_config = [0.80, 0.75, 0.75, 0.75, 1.20,
-        #                0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
-        # msg.name = self.ordered_joint_names + self.hand_joint_names
-        # msg.position = list(q_next) + hand_config
+        # msg.name = self.ordered_joint_names
+        # msg.position = list(q_next)
         # self.publisher.publish(msg)
+        
+        hand_config = [0.80, 0.75, 0.75, 0.75, 1.20,
+                       0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
+        msg.name = self.ordered_joint_names + self.hand_joint_names
+        msg.position = list(q_next) + hand_config
+        self.publisher.publish(msg)
 
 
 def main(args=None):

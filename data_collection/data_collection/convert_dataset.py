@@ -13,12 +13,13 @@ INPUT_DIR = "./my_dataset"
 OUTPUT_DIR = "./lerobot_dataset"
 FPS = 5
 CAMERA_KEYS = ["cam1", "cam2"]
-CHUNK_NAME = "chunk_000"
+CHUNK_NAME = "chunk-000"
 
 # Create output directories
 DATA_DIR = os.path.join(OUTPUT_DIR, "data", CHUNK_NAME)
 VIDEO_DIRS = {
-    cam: os.path.join(OUTPUT_DIR, "videos", CHUNK_NAME, f"observation.images.{cam}")
+    cam: os.path.join(OUTPUT_DIR, "videos", CHUNK_NAME,
+                      f"observation.images.{cam}")
     for cam in CAMERA_KEYS
 }
 META_DIR = os.path.join(OUTPUT_DIR, "meta")
@@ -28,6 +29,8 @@ for d in VIDEO_DIRS.values():
 os.makedirs(META_DIR, exist_ok=True)
 
 # Helper to write video
+
+
 def write_video(frames, path, fps):
     height, width, _ = frames[0].shape
     writer = cv2.VideoWriter(
@@ -39,6 +42,7 @@ def write_video(frames, path, fps):
     for f in frames:
         writer.write(f)
     writer.release()
+
 
 # Convert each episode
 index = 0
@@ -66,7 +70,10 @@ for i, filename in tqdm(enumerate(pkl_files), total=len(pkl_files)):
         act = step['action']
 
         for cam in CAMERA_KEYS:
-            video_buffers[cam].append(obs['images'][cam])
+            img = obs['images'][cam]
+            resiz_img = cv2.resize(
+                img, (640, 360), interpolation=cv2.INTER_AREA)
+            video_buffers[cam].append(resiz_img)
 
         state = np.array(obs['state'], dtype=np.float32)
         action = np.array(act, dtype=np.float32)
@@ -92,4 +99,3 @@ for i, filename in tqdm(enumerate(pkl_files), total=len(pkl_files)):
     for cam in CAMERA_KEYS:
         video_path = os.path.join(VIDEO_DIRS[cam], f"episode_{i:06d}.mp4")
         write_video(video_buffers[cam], video_path, FPS)
-

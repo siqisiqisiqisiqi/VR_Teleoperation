@@ -38,13 +38,13 @@
         <joint name="left_wrist_yaw" value="-0.3039"/>
     </group_state>
     <group_state name="right_home" group="right_arm">
-        <joint name="right_elbow_pitch" value="1.3471"/>
-        <joint name="right_elbow_yaw" value="0.0"/>
-        <joint name="right_shoulder_pitch" value="0.61"/>
-        <joint name="right_shoulder_roll" value="0.071"/>
-        <joint name="right_wrist_pitch" value="-0.0252"/>
+        <joint name="right_elbow_pitch" value="1.74"/>
+        <joint name="right_elbow_yaw" value="0.01"/>
+        <joint name="right_shoulder_pitch" value="0.14"/>
+        <joint name="right_shoulder_roll" value="-0.41"/>
+        <joint name="right_wrist_pitch" value="-0.13"/>
         <joint name="right_wrist_roll" value="0.0"/>
-        <joint name="right_wrist_yaw" value="0.0"/>
+        <joint name="right_wrist_yaw" value="0.058"/>
     </group_state>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_link"/>

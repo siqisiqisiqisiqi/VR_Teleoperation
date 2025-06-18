@@ -34,6 +34,7 @@ class DataCollector(Node):
         self.cam_left = None
         self.cam_right = None
         self.state = "wait"
+        self.running = True
 
         # Subscriptions
         self.create_subscription(
@@ -76,7 +77,7 @@ class DataCollector(Node):
 
     def state_callback(self, msg):
         self.state = msg.data
-        self.get_logger().info(f"The recording state is {self.state}.")
+        # self.get_logger().info(f"The recording state is {self.state}.")
 
     def tf_callback(self, msg):
         if not msg.transforms:
@@ -100,22 +101,27 @@ class DataCollector(Node):
             for i, joints in enumerate(self.hand_joint):
                 idx = name_list.index(joints)
                 finger_config[i] = position[idx]
-            self.current_state[7] = 1 if norm(finger_config[:4]) > 0.8 else 0
+            self.current_state[7] = 1 if norm(finger_config[:4]) > 0.5 else 0
 
     def pose_callback(self, msg):
         self.ee_pose = msg
 
     def hand_state_callback(self, msg):
-        position = msg.position
-        name_list = msg.name
-        finger_config = np.zeros(len(self.hand_joint))
-        try:
-            for i, joints in enumerate(self.hand_joint):
-                idx = name_list.index(joints)
-                finger_config[i] = position[idx]
-            self.gripper_state = 1 if norm(finger_config[:4]) > 0.8 else 0
-        except:
-            pass
+        with self.lock:
+            position = msg.position
+            name_list = msg.name
+            finger_config = np.zeros(len(self.hand_joint))
+            self.get_logger().info("1")
+            try:
+                for i, joints in enumerate(self.hand_joint):
+                    idx = name_list.index(joints)
+                    finger_config[i] = position[idx]
+                self.get_logger().info("3")
+                self.gripper_state = 1 if norm(finger_config[:4]) > 0.5 else 0
+                self.get_logger().info(
+                    f"command gripper state is {norm(finger_config[:4])}")
+            except:
+                pass
 
     def left_image_callback(self, msg):
         self.cam_left = bridge.imgmsg_to_cv2(msg, "bgr8")
@@ -157,8 +163,10 @@ class DataCollector(Node):
         }
         self.episode.append(record)
 
-        self.get_logger().info(
-            f"Recording step {self.frame_idx}: action={action}")
+        # self.get_logger().info(
+        #     f"Recording step {self.frame_idx}: action={action}")
+        # self.get_logger().info(
+        #     f"output gripper state is {self.gripper_state}, current gripper state is {self.current_state[-1]}.")
         self.frame_idx = self.frame_idx + 1
 
         if self.state == "stop":  # example episode length
@@ -170,14 +178,15 @@ class DataCollector(Node):
                 f"Saved episode {self.episode_idx} with {len(self.episode)} steps")
 
             # reset
-            rclpy.shutdown()
+            self.running = False
 
 
 def main():
     rclpy.init()
     node = DataCollector()
     try:
-        rclpy.spin(node)
+        while rclpy.ok() and node.running:
+            rclpy.spin_once(node, timeout_sec=0.1)
     except KeyboardInterrupt:
         print("Shutting down.")
     finally:

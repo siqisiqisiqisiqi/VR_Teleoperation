@@ -204,8 +204,7 @@ class RosBridge(Node):
         values = [float(right_gripper_pose[i]) for i in order]
         values_norm = norm(values[:4])
         if values_norm > 0.8:
-            # finger_positions = [0.7, 0.80, 0.6, 0.60, 1.16, 0.13]
-            finger_positions = [0.7, 0.90, 0.8, 0.80, 1.16, 0.13]
+            finger_positions = [0.80, 0.75, 0.75, 0.75, 1.2, 0.3]
         else:
             finger_positions = [0.0, 0.0, 0.0, 0.0, 1.2, 0.0]
         msg_data.position.extend(finger_positions)
