@@ -1,6 +1,7 @@
 # 🤖 VR-Controlled Humanoid Robot with Inverse Kinematics
 
 This project integrates **real-time VR teleoperation** (via Meta Quest) and a **closed-loop inverse kinematics (CLIK) solver** using **Pinocchio** to control a humanoid robot's upper body in simulation (Isaac Sim) through ROS 2.
+A test Isaac Sim environment can be found [here](https://drive.google.com/file/d/1Bsv98zKYRY3rpAmXcEab5VOmEmICtvBd/view?usp=drive_link)
 
 ---
 
@@ -10,6 +11,7 @@ This project integrates **real-time VR teleoperation** (via Meta Quest) and a **
 .
 ├── pinocchio_ik_solver/   # CLIK-based IK solver with joint-space control
 ├── TeleVision/            # VR interface using Meta Quest + ROS 2 bridge
+├── data_collection/       # ROS-based data collection and convertion for lerobot format dataset
 └── .gitignore
 ```
 
@@ -47,7 +49,7 @@ The project enables you to:
 ---
 
 ## 🚀 How to Run
-
+This is just a workflow demo, please check each submodule for detail implementation.
 ### 1. Launch VR Bridge
 Make sure Meta Quest is connected and run:
 
@@ -62,7 +64,12 @@ Make sure Isaac Sim and ROS 2 nodes are running. Then:
 ```bash
 python3 clik_vr_ros.py
 ```
+### 3. ROS data collection
+Make sure Isaac Sim and ROS 2 nodes are running. Then:
 
+```bash
+python3 data_collection.py
+```
 
 ---
 
@@ -72,7 +79,7 @@ python3 clik_vr_ros.py
 Each subdirectory contains its own `README.md` file for details:
 - [`pinocchio_ik_solver/README.md`](./pinocchio_ik_solver/README.md)
 - [`TeleVision/README.md`](./TeleVision/README.md)
-
+- [`data_collection/README.md`](./data_collection/README.md)
 ---
 
 ## 🤝 Acknowledgements

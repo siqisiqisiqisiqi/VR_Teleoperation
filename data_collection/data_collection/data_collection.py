@@ -111,15 +111,11 @@ class DataCollector(Node):
             position = msg.position
             name_list = msg.name
             finger_config = np.zeros(len(self.hand_joint))
-            self.get_logger().info("1")
             try:
                 for i, joints in enumerate(self.hand_joint):
                     idx = name_list.index(joints)
                     finger_config[i] = position[idx]
-                self.get_logger().info("3")
                 self.gripper_state = 1 if norm(finger_config[:4]) > 0.5 else 0
-                self.get_logger().info(
-                    f"command gripper state is {norm(finger_config[:4])}")
             except:
                 pass
 
@@ -163,10 +159,9 @@ class DataCollector(Node):
         }
         self.episode.append(record)
 
-        # self.get_logger().info(
-        #     f"Recording step {self.frame_idx}: action={action}")
-        # self.get_logger().info(
-        #     f"output gripper state is {self.gripper_state}, current gripper state is {self.current_state[-1]}.")
+        self.get_logger().info(
+            f"Recording step {self.frame_idx}: action={action}")
+
         self.frame_idx = self.frame_idx + 1
 
         if self.state == "stop":  # example episode length

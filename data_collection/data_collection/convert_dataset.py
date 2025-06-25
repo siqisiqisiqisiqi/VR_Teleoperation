@@ -2,7 +2,6 @@
 import os
 import pickle
 import cv2
-import json
 import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
