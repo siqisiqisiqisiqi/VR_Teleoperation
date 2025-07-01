@@ -4,15 +4,26 @@ import sys
 path = str(pathlib.Path(__file__).parent.parent)
 sys.path.insert(1, path)
 
-import sys
+import pickle
 import numpy as np
 from PyQt5.QtWidgets import QApplication
+from scipy.spatial import Delaunay
 from PyQt5.QtCore import QTimer
 
 import pinocchio as pin
 from pinocchio.visualize import MeshcatVisualizer
 from utils.twist_slider_gui import PoseSliderWidget
 from scipy.spatial.transform import Rotation as R
+
+with open("./workspace/right_arm_workspace.pkl", "rb") as f:
+    data = pickle.load(f)
+    positions = data["positions"]
+
+hull_delaunay = Delaunay(positions)
+
+
+def is_pose_reachable(position: np.ndarray) -> bool:
+    return hull_delaunay.find_simplex(position) >= 0
 
 
 class PoseIKController:
@@ -109,6 +120,12 @@ class PoseIKController:
         rotation = pin.rpy.rpyToMatrix(*rpy)
         oMdes = pin.SE3(rotation, translation)
         desired_quat = R.from_euler('xyz', rpy).as_quat()
+
+        if is_pose_reachable(translation):
+            print("✅ Target is reachable")
+        else:
+            print("❌ Target is outside the reachable workspace")
+            return
 
         # low pass filter for the input pose
         self.oMdes_smoothed = self.interpolate_se3(

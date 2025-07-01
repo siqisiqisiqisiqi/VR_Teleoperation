@@ -23,7 +23,7 @@ class DataCollector(Node):
         super().__init__('data_collector')
 
         # ROS Params
-        self.timer_freq = 5  # Hz
+        self.timer_freq = 10  # Hz
         self.save_dir = './my_dataset'
         os.makedirs(self.save_dir, exist_ok=True)
 
