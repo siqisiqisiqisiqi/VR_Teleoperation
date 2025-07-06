@@ -7,7 +7,7 @@ from sensor_msgs.msg import JointState
 from geometry_msgs.msg import Pose
 import numpy as np
 import pinocchio as pin
-import time
+import copy
 from scipy.spatial.transform import Rotation as R
 
 
@@ -27,11 +27,6 @@ class PoseIKController(Node):
             "right_shoulder_pitch", "right_shoulder_roll",
             "right_elbow_yaw", "right_elbow_pitch",
             "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll"
-        ]
-
-        self.hand_joint_names = [
-            "right_index_1_joint", "right_little_1_joint", "right_middle_1_joint",
-            "right_ring_1_joint", "right_thumb_1_joint", "right_thumb_2_joint"
         ]
 
         self.ordered_joint_names = None
@@ -63,6 +58,9 @@ class PoseIKController(Node):
         name_to_index = {name: i for i, name in enumerate(name_list)}
         for i, name in enumerate(self.ordered_joint_names):
             if name in name_to_index:
+                # print(f"position value is {position}")
+                # print(f"name to index is {name_to_index}")
+                # print(f"name is {name}.")
                 self.current_joint_state[i] = position[name_to_index[name]]
             else:
                 print(f"[⚠️] Joint '{name}' not found in joint_states")
@@ -133,7 +131,6 @@ class PoseIKController(Node):
         #     self.oMdes_smoothed, oMdes, 0.8)
         self.oMdes_smoothed = oMdes
 
-        t0 = time.time()
         # Step 2: update forward kinematics
         q_measured = np.array(self.current_joint_state)
         pin.forwardKinematics(self.model, self.data, q_measured)
@@ -184,7 +181,7 @@ class PoseIKController(Node):
         # Step 4: publish joint command
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.name = self.ordered_joint_names
+        msg.name = copy.copy(self.ordered_joint_names)
         msg.position = list(q_next)
 
         if self.vr_joint is not None:
