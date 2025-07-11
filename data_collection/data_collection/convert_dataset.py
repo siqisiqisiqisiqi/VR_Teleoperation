@@ -10,8 +10,8 @@ from tqdm import tqdm
 # Config
 INPUT_DIR = "./my_dataset"
 OUTPUT_DIR = "./lerobot_dataset"
-FPS = 5
-CAMERA_KEYS = ["cam1", "cam2"]
+FPS = 10
+CAMERA_KEYS = ["cam1", "cam2", "cam3"]
 CHUNK_NAME = "chunk-000"
 
 # Create output directories

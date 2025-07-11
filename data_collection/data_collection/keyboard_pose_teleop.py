@@ -67,7 +67,9 @@ class KeyboardTeleopNode(Node):
         self.hand_closed = False
         self.recording = False
 
-        self.timer = self.create_timer(0.2, self.publish_pose)
+        # 10 Hz Frequency for data collection
+        # self.timer = self.create_timer(0.1, self.publish_pose)
+        self.timer = self.create_timer(0.05, self.publish_pose)
 
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()

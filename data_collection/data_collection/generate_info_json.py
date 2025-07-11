@@ -4,13 +4,14 @@ import pyarrow.parquet as pq
 
 DATA_DIR = "./lerobot_dataset/data/chunk-000"
 META_DIR = "./lerobot_dataset/meta"
-CAMERA_KEYS = ["cam1", "cam2"]
-FPS = 5
+CAMERA_KEYS = ["cam1", "cam2", "cam3"]
+FPS = 10
 CHUNK_SIZE = 1000
 CODEBASE_VERSION = "v2.1"
 
 # Scan dataset
-parquet_files = sorted([f for f in os.listdir(DATA_DIR) if f.endswith(".parquet")])
+parquet_files = sorted(
+    [f for f in os.listdir(DATA_DIR) if f.endswith(".parquet")])
 total_episodes = len(parquet_files)
 total_frames = 0
 for file in parquet_files:

@@ -11,6 +11,7 @@ DATA_PATH = "./lerobot_dataset/data/chunk-000"
 VIDEO_PATHS = {
     "observation.images.cam1": "./lerobot_dataset/videos/chunk-000/observation.images.cam1",
     "observation.images.cam2": "./lerobot_dataset/videos/chunk-000/observation.images.cam2",
+    "observation.images.cam3": "./lerobot_dataset/videos/chunk-000/observation.images.cam3",
 }
 OUT_JSONL = "./lerobot_dataset/meta/episodes_stats.jsonl"
 

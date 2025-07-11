@@ -58,9 +58,6 @@ class PoseIKController(Node):
         name_to_index = {name: i for i, name in enumerate(name_list)}
         for i, name in enumerate(self.ordered_joint_names):
             if name in name_to_index:
-                # print(f"position value is {position}")
-                # print(f"name to index is {name_to_index}")
-                # print(f"name is {name}.")
                 self.current_joint_state[i] = position[name_to_index[name]]
             else:
                 print(f"[⚠️] Joint '{name}' not found in joint_states")

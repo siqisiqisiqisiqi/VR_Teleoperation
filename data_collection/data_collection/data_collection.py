@@ -14,6 +14,7 @@ from tf2_msgs.msg import TFMessage
 from cv_bridge import CvBridge
 from threading import Lock
 from numpy.linalg import norm
+import cv2
 
 bridge = CvBridge()
 
@@ -45,9 +46,11 @@ class DataCollector(Node):
         self.create_subscription(
             JointState, '/joint_command', self.hand_state_callback, 10)
         self.create_subscription(
-            Image, '/rgb_left', self.left_image_callback, 10)
+            Image, '/rgb_global', self.global_image_callback, 10)
         self.create_subscription(
             Image, '/rgb_right', self.right_image_callback, 10)
+        self.create_subscription(
+            Image, '/rgb_wrist', self.wrist_image_callback, 10)
         self.create_subscription(
             String, '/recording_trigger', self.state_callback, 10)
 
@@ -119,11 +122,20 @@ class DataCollector(Node):
             except:
                 pass
 
-    def left_image_callback(self, msg):
-        self.cam_left = bridge.imgmsg_to_cv2(msg, "bgr8")
+    def global_image_callback(self, msg):
+        img = bridge.imgmsg_to_cv2(msg, "bgr8")
+        self.cam_global = cv2.resize(
+            img, (640, 360), interpolation=cv2.INTER_AREA)
 
     def right_image_callback(self, msg):
-        self.cam_right = bridge.imgmsg_to_cv2(msg, "bgr8")
+        img = bridge.imgmsg_to_cv2(msg, "bgr8")
+        self.cam_right = cv2.resize(
+            img, (640, 360), interpolation=cv2.INTER_AREA)
+
+    def wrist_image_callback(self, msg):
+        img = bridge.imgmsg_to_cv2(msg, "bgr8")
+        self.cam_wrist = cv2.resize(
+            img, (640, 360), interpolation=cv2.INTER_AREA)
 
     def get_state(self):
         with self.lock:
@@ -138,8 +150,9 @@ class DataCollector(Node):
 
     def get_camera_images(self):
         return {
-            "cam1": self.cam_left if self.cam_left is not None else np.zeros((480, 640, 3), np.uint8),
-            "cam2": self.cam_right if self.cam_right is not None else np.zeros((480, 640, 3), np.uint8)
+            "cam1": self.cam_global if self.cam_global is not None else np.zeros((360, 640, 3), np.uint8),
+            "cam2": self.cam_right if self.cam_right is not None else np.zeros((360, 640, 3), np.uint8),
+            "cam3": self.cam_wrist if self.cam_wrist is not None else np.zeros((360, 640, 3), np.uint8)
         }
 
     def record_callback(self):
@@ -159,8 +172,8 @@ class DataCollector(Node):
         }
         self.episode.append(record)
 
-        self.get_logger().info(
-            f"Recording step {self.frame_idx}: action={action}")
+        # self.get_logger().info(
+        #     f"Recording step {self.frame_idx}: action={action}")
 
         self.frame_idx = self.frame_idx + 1
 
