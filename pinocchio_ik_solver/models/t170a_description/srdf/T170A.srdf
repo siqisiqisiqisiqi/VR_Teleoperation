@@ -29,13 +29,13 @@
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="left_home" group="left_arm">
-        <joint name="left_elbow_pitch" value="-1.5174"/>
-        <joint name="left_elbow_yaw" value="0.2532"/>
-        <joint name="left_shoulder_pitch" value="-0.2115"/>
-        <joint name="left_shoulder_roll" value="0.0413"/>
-        <joint name="left_wrist_pitch" value="0.0671"/>
-        <joint name="left_wrist_roll" value="-0.076"/>
-        <joint name="left_wrist_yaw" value="-0.3039"/>
+        <joint name="left_elbow_pitch" value="-1.74"/>
+        <joint name="left_elbow_yaw" value="-0.01"/>
+        <joint name="left_shoulder_pitch" value="-0.14"/>
+        <joint name="left_shoulder_roll" value="0.41"/>
+        <joint name="left_wrist_pitch" value="0.13"/>
+        <joint name="left_wrist_roll" value="0.0"/>
+        <joint name="left_wrist_yaw" value="-0.058"/>
     </group_state>
     <group_state name="right_home" group="right_arm">
         <joint name="right_elbow_pitch" value="1.74"/>

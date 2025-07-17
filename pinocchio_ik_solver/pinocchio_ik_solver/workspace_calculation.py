@@ -12,13 +12,13 @@ MODEL_DIR = pathlib.Path(__file__).parent.parent / "models"
 URDF_PATH = MODEL_DIR / "t170a_description/urdf/T170A.urdf"
 SRDF_PATH = MODEL_DIR / "t170a_description/srdf/T170A.srdf"
 
-RIGHT_ARM_JOINTS = [
-    "right_shoulder_pitch", "right_shoulder_roll",
-    "right_elbow_yaw", "right_elbow_pitch",
-    "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll"
+LEFT_ARM_JOINTS = [
+    "left_shoulder_pitch", "left_shoulder_roll",
+    "left_elbow_yaw", "left_elbow_pitch",
+    "left_wrist_yaw", "left_wrist_pitch", "left_wrist_roll"
 ]
 
-EE_FRAME_NAME = "right_wrist_roll_link"
+EE_FRAME_NAME = "left_wrist_roll_link"
 N_SAMPLES = 10000  # Number of samples
 
 # === Load Full Model ===
@@ -29,7 +29,7 @@ q0 = pin.neutral(full_model)
 # === Build Reduced Model for Right Arm ===
 joints_to_lock = [
     jid for jid, joint in enumerate(full_model.joints)
-    if full_model.names[jid] not in RIGHT_ARM_JOINTS and full_model.names[jid] != "universe"
+    if full_model.names[jid] not in LEFT_ARM_JOINTS and full_model.names[jid] != "universe"
 ]
 reduced_model = pin.buildReducedModel(full_model, joints_to_lock, q0)
 reduced_data = reduced_model.createData()
@@ -66,7 +66,7 @@ def sample_workspace(model, data, frame_id, n_samples=10000):
 
 
 def save_workspace(root, positions, hull):
-    with open(f"{root}/right_arm_workspace.pkl", "wb") as f:
+    with open(f"{root}/left_arm_workspace.pkl", "wb") as f:
         pickle.dump({
             "positions": positions,
             "hull_vertices": hull.vertices  # optional

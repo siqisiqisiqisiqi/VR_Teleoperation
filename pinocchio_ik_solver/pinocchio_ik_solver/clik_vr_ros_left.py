@@ -1,27 +1,14 @@
 #!/usr/bin/env python3
-import pickle
-import pathlib
 
+import pathlib
 import rclpy
-import numpy as np
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import Pose
+import numpy as np
 import pinocchio as pin
-from std_msgs.msg import Bool
+import copy
 from scipy.spatial.transform import Rotation as R
-from scipy.spatial import Delaunay
-
-
-with open("./workspace/right_arm_workspace.pkl", "rb") as f:
-    data = pickle.load(f)
-    positions = data["positions"]
-
-hull_delaunay = Delaunay(positions)
-
-
-def is_pose_reachable(position: np.ndarray) -> bool:
-    return hull_delaunay.find_simplex(position) >= 0
 
 
 class PoseIKController(Node):
@@ -34,16 +21,12 @@ class PoseIKController(Node):
         self.current_joint_state = [None] * 7
         self.latest_pose_msg = None
         self.hand_state = True
+        self.vr_joint = None
 
         self.target_joint_names = [
-            "right_shoulder_pitch", "right_shoulder_roll",
-            "right_elbow_yaw", "right_elbow_pitch",
-            "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll"
-        ]
-
-        self.hand_joint_names = [
-            "right_index_1_joint", "right_little_1_joint", "right_middle_1_joint",
-            "right_ring_1_joint", "right_thumb_1_joint", "right_thumb_2_joint"
+            "left_shoulder_pitch", "left_shoulder_roll",
+            "left_elbow_yaw", "left_elbow_pitch",
+            "left_wrist_yaw", "left_wrist_pitch", "left_wrist_roll"
         ]
 
         self.ordered_joint_names = None
@@ -60,13 +43,14 @@ class PoseIKController(Node):
             JointState, '/joint_command', 10)
         self.create_subscription(
             JointState, '/joint_states_isaac', self.joint_state_callback, 10)
-        self.create_subscription(Pose, '/hand_pose_ik', self.pose_callback, 10)
         self.create_subscription(
-            Bool, '/hand_state', self.hand_state_callback, 10)
+            JointState, '/vr_joint', self.vr_joint_callback, 10)
+        self.create_subscription(Pose, '/hand_pose_ik', self.pose_callback, 10)
         self.get_logger().info("ros setup completed!")
 
-    def hand_state_callback(self, msg):
-        self.hand_state = msg.data
+    def vr_joint_callback(self, msg):
+        # receive the joint command from the VR for head and finger
+        self.vr_joint = msg
 
     def joint_state_callback(self, msg):
         position = msg.position
@@ -107,12 +91,12 @@ class PoseIKController(Node):
         pin.removeCollisionPairs(self.model, self.geom_model, srdf_model_path)
         self.geom_data = pin.GeometryData(self.geom_model)
 
-        self.frame_name = "right_wrist_roll_link"
+        self.frame_name = "left_wrist_roll_link"
         self.frame_id = self.model.getFrameId(self.frame_name)
         self.joint_id = self.model.frames[self.frame_id].parentJoint
 
         pin.loadReferenceConfigurations(self.model, srdf_model_path)
-        self.q_home = self.model.referenceConfigurations["right_home"]
+        self.q_home = self.model.referenceConfigurations["left_home"]
         q = self.q_home
 
         pin.forwardKinematics(self.model, self.data, q)
@@ -139,13 +123,6 @@ class PoseIKController(Node):
         quat = pin.Quaternion(ori.w, ori.x, ori.y, ori.z)
         rotation = quat.matrix()
         oMdes = pin.SE3(rotation, translation)
-
-        if is_pose_reachable(translation):
-            pass
-            # print("✅ Target is reachable")
-        else:
-            # print("❌ Target is outside the reachable workspace")
-            return
 
         # self.oMdes_smoothed = self.interpolate_se3(
         #     self.oMdes_smoothed, oMdes, 0.8)
@@ -201,14 +178,12 @@ class PoseIKController(Node):
         # Step 4: publish joint command
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
-        # msg.name = self.ordered_joint_names
-        # msg.position = list(q_next)
-        # self.publisher.publish(msg)
+        msg.name = copy.copy(self.ordered_joint_names)
+        msg.position = list(q_next)
 
-        hand_config = [0.80, 0.75, 0.75, 0.75, 1.20,
-                       0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
-        msg.name = self.ordered_joint_names + self.hand_joint_names
-        msg.position = list(q_next) + hand_config
+        if self.vr_joint is not None:
+            msg.name += self.vr_joint.name
+            msg.position += self.vr_joint.position
         self.publisher.publish(msg)
 
 

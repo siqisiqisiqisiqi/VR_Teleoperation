@@ -29,18 +29,17 @@ def button_0(state, buttons, pressed_buttons):
     print("Button:", pressed_buttons)
 
 
-def button_0_1(state, buttons, pressed_buttons):
+def button_1(state, buttons, pressed_buttons):
     print("Buttons:", pressed_buttons)
 
 
 def someButton(state, buttons):
-    print("Some button")
+    print("Buttons:", buttons)
 
 
 def callback():
     button_arr = [pyspacemouse.ButtonCallback(0, button_0),
-                  pyspacemouse.ButtonCallback([1], lambda state, buttons, pressed_buttons: print("Button: 1")),
-                  pyspacemouse.ButtonCallback([0, 1], button_0_1), ]
+                  pyspacemouse.ButtonCallback(14, button_1), ]
 
     success = pyspacemouse.open(dof_callback=pyspacemouse.print_state, button_callback=someButton,
                                 button_callback_arr=button_arr)

@@ -15,7 +15,10 @@ from pinocchio.visualize import MeshcatVisualizer
 from utils.twist_slider_gui import PoseSliderWidget
 from scipy.spatial.transform import Rotation as R
 
-with open("./workspace/right_arm_workspace.pkl", "rb") as f:
+
+# switch different arm: left or right
+mode = "right"
+with open(f"./workspace/{mode}_arm_workspace.pkl", "rb") as f:
     data = pickle.load(f)
     positions = data["positions"]
 
@@ -45,9 +48,9 @@ class PoseIKController:
         )
 
         self.target_joint_names = [
-            "right_shoulder_pitch", "right_shoulder_roll",
-            "right_elbow_yaw", "right_elbow_pitch",
-            "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll"
+            f"{mode}_shoulder_pitch", f"{mode}_shoulder_roll",
+            f"{mode}_elbow_yaw", f"{mode}_elbow_pitch",
+            f"{mode}_wrist_yaw", f"{mode}_wrist_pitch", f"{mode}_wrist_roll"
         ]
 
         joints_to_lock_ids = [jid for jid, joint in enumerate(full_model.joints)
@@ -68,12 +71,12 @@ class PoseIKController:
         self.geom_data = pin.GeometryData(self.geom_model)
 
         # frame selection
-        self.frame_name = "right_wrist_roll_link"
+        self.frame_name = f"{mode}_wrist_roll_link"
         self.frame_id = self.model.getFrameId(self.frame_name)
         self.joint_id = self.model.frames[self.frame_id].parentJoint
 
         pin.loadReferenceConfigurations(self.model, srdf_model_path)
-        self.q_home = self.model.referenceConfigurations["right_home"]
+        self.q_home = self.model.referenceConfigurations[f"{mode}_home"]
         self.q = self.q_home
 
         pin.forwardKinematics(self.model, self.data, self.q)
