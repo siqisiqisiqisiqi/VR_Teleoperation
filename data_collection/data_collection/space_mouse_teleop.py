@@ -79,7 +79,7 @@ class SpaceMouseTeleop(Node):
 
         # Rotation
         delta_rpy_radian = np.array(
-            [-1 * state.yaw, -1 * state.pitch, state.roll]) * dt * 0.5
+            [-1 * state.yaw, -1 * state.pitch, state.roll]) * dt * 0.2
         delta_rot = R.from_euler('xyz', delta_rpy_radian, degrees=False)
         # print(f"rotation is {state.roll}, {state.pitch}, {state.yaw}.")
         self.orientation = self.orientation * delta_rot

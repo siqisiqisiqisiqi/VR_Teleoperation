@@ -168,18 +168,19 @@ class PoseIKController:
             self.model, self.data, self.q, self.joint_id)
         J = -pin.Jlog6(iMd.inverse()).dot(J)
 
-        # Compute condition number of Jacobian
-        u, s, vh = np.linalg.svd(J)
-        cond_number = s[0] / (s[-1] + 1e-8)  # avoid division by zero
-        print(f"⚠️ Jacobian condition number: {cond_number:.2f}")
-
         lambda_damp = 1e-6
         J_pinv = J.T @ np.linalg.inv(J @ J.T + lambda_damp * np.eye(6))
 
         v_task = -J_pinv @ err
-        dq_null_desired = -1.0 * (self.q - self.q_home)
+
+        dq_null_desired = np.zeros(self.model.nv)
+        dq_null_desired[2] = -0.65 - self.q[2]
+        dq_null_desired[3] = -0.25 - self.q[3]
         P_null = np.eye(self.model.nv) - J_pinv @ J
         dq_null = P_null @ dq_null_desired
+
+        print(f"‖v_task‖: {np.linalg.norm(v_task):.4f}")
+        print(f"dq_null value is : {dq_null}")
 
         v = v_task + dq_null
         self.q[:] = pin.integrate(self.model, self.q, v * 0.02)

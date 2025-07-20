@@ -1,7 +1,7 @@
 # 🤖 VR-Controlled Humanoid Robot with Inverse Kinematics
 
 This project integrates **real-time VR teleoperation** (via Meta Quest) and a **closed-loop inverse kinematics (CLIK) solver** using **Pinocchio** to control a humanoid robot's upper body in simulation (Isaac Sim) through ROS 2.
-A test Isaac Sim environment can be found [here](https://drive.google.com/file/d/1oIgz8n4L2Czl6g-C3eEjWGtzhZdctEDt/view?usp=drive_link)
+A test Isaac Sim environment can be found [here](https://drive.google.com/file/d/1g0V8V2N0FjDpum78cdSkEF1KbTttzPlq/view?usp=sharing)
 
 ---
 
