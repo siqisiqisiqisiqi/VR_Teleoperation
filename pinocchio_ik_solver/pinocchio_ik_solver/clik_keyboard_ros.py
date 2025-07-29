@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import copy
 import pickle
 import pathlib
@@ -14,7 +15,9 @@ from scipy.spatial.transform import Rotation as R
 from scipy.spatial import Delaunay
 
 
-with open("./workspace/right_arm_workspace.pkl", "rb") as f:
+relative_path = "workspace/right_arm_workspace.pkl"
+absolute_path = os.path.abspath(relative_path)
+with open(absolute_path, "rb") as f:
     data = pickle.load(f)
     positions = data["positions"]
 
@@ -192,8 +195,10 @@ class PoseIKController(Node):
         J_pinv = J.T @ np.linalg.inv(J @ J.T + lambda_damp * np.eye(6))
 
         v_task = -J_pinv @ err
-        dq_null_desired = -1.0 * (q_measured - self.q_home)
-        # dq_null_desired = np.zeros(self.model.nv)
+        # dq_null_desired = -1.0 * (q_measured - self.q_home)
+        dq_null_desired = np.zeros(self.model.nv)
+        dq_null_desired[2] = self.q_home[2] - q_measured[2]
+        dq_null_desired[3] = self.q_home[3] - q_measured[3]
         # dq_null_desired[2] = -0.65 - q_measured[2]
         # dq_null_desired[3] = -0.25 - q_measured[3]
 
@@ -206,12 +211,10 @@ class PoseIKController(Node):
         # Step 4: publish joint command
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
-        # msg.name = self.ordered_joint_names
-        # msg.position = list(q_next)
-        # self.publisher.publish(msg)
-
-        hand_config = [0.80, 0.75, 0.75, 0.75, 1.20,
-                       0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
+        # hand_config = [0.80, 0.75, 0.75, 0.75, 1.39,
+        #                0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
+        hand_config = [0.85, 0.80, 0.80, 0.80, 1.39,
+                       0.35] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
         msg.name = self.ordered_joint_names + self.hand_joint_names
         msg.position = list(q_next) + hand_config
         self.publisher.publish(msg)

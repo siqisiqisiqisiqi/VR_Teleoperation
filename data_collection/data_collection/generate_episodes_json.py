@@ -5,7 +5,8 @@ import pyarrow.parquet as pq
 DATA_DIR = "./lerobot_dataset/data/chunk-000"
 META_DIR = "./lerobot_dataset/meta"
 
-TASK0 = "Move the cylinder onto the plate with corresponding color."
+# TASK0 = "Move the cylinder onto the plate with corresponding color."
+TASK0 = "Place the cylinder into the box with right orientation."
 # --- 1. Generate episodes.jsonl ---
 episodes_jsonl_path = os.path.join(META_DIR, "episodes.jsonl")
 

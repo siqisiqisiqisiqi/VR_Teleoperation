@@ -19,10 +19,10 @@ KEY_BINDINGS_POSE = {
     'd': ('pos', 1, -0.001),  # Y-
     'q': ('pos', 2, 0.001),  # Z+
     'e': ('pos', 2, -0.001),  # Z-
-    'i': ('rpy', 0, 1.0),   # Roll+
-    'k': ('rpy', 0, -1.0),   # Roll-
-    'j': ('rpy', 1, 1.0),   # Pitch+
-    'l': ('rpy', 1, -1.0),   # Pitch-
+    'i': ('rpy', 1, 1.0),   # Pitch+
+    'k': ('rpy', 1, -1.0),   # Pitch-
+    'j': ('rpy', 0, 1.0),   # Roll+
+    'l': ('rpy', 0, -1.0),   # Roll-
     'u': ('rpy', 2, 1.0),   # Yaw+
     'o': ('rpy', 2, -1.0),   # Yaw-
 }
@@ -64,6 +64,9 @@ class KeyboardTeleopNode(Node):
 
         self.pos = np.array(initial_pose[:3])
         self.rpy = np.array(initial_pose[3:])
+        self.R_init = R.from_euler('xyz', self.rpy, degrees=True)
+        self.R_delta = R.identity()
+
         self.hand_closed = False
         self.recording = False
 
@@ -93,7 +96,31 @@ class KeyboardTeleopNode(Node):
                 if mode == 'pos':
                     self.pos[idx] += delta
                 elif mode == 'rpy':
-                    self.rpy[idx] += delta
+                    # Teleoperation in the world frame
+                    # self.rpy[idx] += delta
+
+                    # Teleoperation in the current wrist frame
+                    # orientation = R.from_euler('xyz', self.rpy, degrees=True)
+                    # delta_rpy_degree = np.zeros(3)
+                    # delta_rpy_degree[idx] = delta
+                    # delta_rot = R.from_euler(
+                    #     'xyz', delta_rpy_degree, degrees=True)
+                    # orientation = orientation * delta_rot
+                    # self.rpy = orientation.as_euler('xyz', degrees=True)
+
+                    # Teleoperation in the initial wrist frame
+                    delta_rpy_degree = np.zeros(3)
+                    delta_rpy_degree[idx] = delta
+                    delta_rot = R.from_euler(
+                        'xyz', delta_rpy_degree, degrees=True)
+
+                    # Accumulate rotation in initial wrist frame
+                    self.R_delta = delta_rot * self.R_delta
+
+                    # Update displayed RPY (optional, for info/logging)
+                    R_current = self.R_init * self.R_delta
+                    self.rpy = R_current.as_euler('xyz', degrees=True)
+
             elif k == 'h':
                 self.hand_closed = not self.hand_closed
                 self.publish_hand_state()

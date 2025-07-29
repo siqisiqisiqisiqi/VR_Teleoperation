@@ -96,8 +96,8 @@ class PoseIKController(Node):
         self.joint_id = self.model.frames[self.frame_id].parentJoint
 
         pin.loadReferenceConfigurations(self.model, srdf_model_path)
-        self.q_home = self.model.referenceConfigurations["right_home"]
-        q = self.q_home
+        q = self.model.referenceConfigurations["right_home"]
+        self.q_home = copy.copy(q)
 
         pin.forwardKinematics(self.model, self.data, q)
         pin.updateFramePlacement(self.model, self.data, self.frame_id)
@@ -168,7 +168,7 @@ class PoseIKController(Node):
         J_pinv = J.T @ np.linalg.inv(J @ J.T + lambda_damp * np.eye(6))
 
         v_task = -J_pinv @ err
-        dq_null_desired = -0.05 * (q_measured - self.q_home)
+        dq_null_desired = -1.0 * (q_measured - self.q_home)
         P_null = np.eye(self.model.nv) - J_pinv @ J
         dq_null = P_null @ dq_null_desired
 

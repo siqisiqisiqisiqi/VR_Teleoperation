@@ -5,6 +5,12 @@
 # eval "$(pyenv init -)"
 # pyenv activate pinocchio-env
 
+# Navigate to the pinocchio ik solver folder
+cd ~/vr_ros2_ws/src/pinocchio_ik_solver
+
+echo "[INFO] Running IK solver..."
+python3 ../pinocchio_ik_solver/pinocchio_ik_solver/clik_keyboard_ros.py &
+
 # Navigate to your workspace source folder
 cd ~/vr_ros2_ws/src/data_collection
 
@@ -20,8 +26,6 @@ cd ~/vr_ros2_ws/src/data_collection
 echo "[INFO] Keyboard control..."
 python3 data_collection/keyboard_pose_teleop.py &
 
-echo "[INFO] Running IK solver..."
-python3 ../pinocchio_ik_solver/pinocchio_ik_solver/clik_keyboard_ros.py &
 
 echo "[INFO] Running data collector..."
 python3 data_collection/data_collection.py &

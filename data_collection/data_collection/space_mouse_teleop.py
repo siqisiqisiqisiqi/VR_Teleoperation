@@ -45,8 +45,9 @@ class SpaceMouseTeleop(Node):
             String, '/recording_trigger', 10)
 
         self.pos = np.array(initial_pose[:3])
-        # self.rpy = np.array(initial_pose[3:])
         self.orientation = R.from_euler('xyz', initial_pose[3:], degrees=True)
+        self.R_init = R.from_euler('xyz', initial_pose[3:], degrees=True)
+        self.R_delta = R.identity()
 
         self.hand_closed = False
         self.recording = False
@@ -70,19 +71,25 @@ class SpaceMouseTeleop(Node):
         self.timer = self.create_timer(0.05, self.publish_pose)
 
     def update_pose(self, state):
+
+        self.get_logger().info(f"update the pose!")
         if not state:
+            self.get_logger().info(f"This is a test!")
             return
 
         dt = 0.01
         # Translation (scale as needed)
-        self.pos += np.array([-1 * state.y, state.x, state.z]) * dt * 0.1
+        self.pos += np.array([state.y, -1 * state.x, state.z]) * dt * 0.1
 
         # Rotation
         delta_rpy_radian = np.array(
-            [-1 * state.yaw, -1 * state.pitch, state.roll]) * dt * 0.2
+            [-1 * state.yaw, state.pitch, -1 * state.roll]) * dt * 0.2
         delta_rot = R.from_euler('xyz', delta_rpy_radian, degrees=False)
-        # print(f"rotation is {state.roll}, {state.pitch}, {state.yaw}.")
-        self.orientation = self.orientation * delta_rot
+
+        self.R_delta = delta_rot * self.R_delta
+        self.orientation = self.R_init * self.R_delta
+
+        # self.orientation = self.orientation * delta_rot
 
     def toggle_hand(self, state, buttons, pressed_buttons):
         self.hand_closed = not self.hand_closed
