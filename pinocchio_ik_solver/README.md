@@ -40,10 +40,10 @@ source install/setup.bash
 
 > Make sure you have `pinocchio`, `pyquaternion`, `PyQt5`, `scipy`, `rclpy`, and `meshcat` installed in your Python (Python=3.10) environment.
 
-Install Python dependencies:
+Install Python dependencies, if environment cannot be installed successfully, after installation, reinstall the numpy to 1.26.4 version:
 
 ```bash
-pip install pin numpy scipy PyQt5 meshcat
+pip install pin==3.4.0 numpy scipy PyQt5 meshcat
 ```
 
 ---
