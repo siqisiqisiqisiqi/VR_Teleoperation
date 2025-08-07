@@ -148,7 +148,7 @@ class PoseIKController(Node):
             pass
             # print("✅ Target is reachable")
         else:
-            # print("❌ Target is outside the reachable workspace")
+            print("❌ Target is outside the reachable workspace")
             return
 
         # self.oMdes_smoothed = self.interpolate_se3(
@@ -211,8 +211,6 @@ class PoseIKController(Node):
         # Step 4: publish joint command
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
-        # hand_config = [0.80, 0.75, 0.75, 0.75, 1.39,
-        #                0.30] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
         hand_config = [0.85, 0.80, 0.80, 0.80, 1.39,
                        0.35] if not self.hand_state else [0.0] * 4 + [1.2, 0.0]
         msg.name = self.ordered_joint_names + self.hand_joint_names

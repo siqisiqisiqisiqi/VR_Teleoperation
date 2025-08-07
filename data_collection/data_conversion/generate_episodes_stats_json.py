@@ -2,9 +2,7 @@ import os
 import json
 import numpy as np
 import pandas as pd
-import pyarrow.parquet as pq
 from tqdm import tqdm
-from pathlib import Path
 import cv2
 
 DATA_PATH = "./lerobot_dataset/data/chunk-000"
@@ -90,15 +88,19 @@ def process_episode(parquet_file):
     return {"episode_index": episode_idx, "stats": stats}
 
 
-# Main
-records = []
-for file in tqdm(sorted(os.listdir(DATA_PATH))):
-    if file.endswith(".parquet"):
-        records.append(process_episode(file))
+def main():
+    records = []
+    for file in tqdm(sorted(os.listdir(DATA_PATH))):
+        if file.endswith(".parquet"):
+            records.append(process_episode(file))
 
-with open(OUT_JSONL, "w") as f:
-    for record in records:
-        json.dump(record, f)
-        f.write("\n")
+    with open(OUT_JSONL, "w") as f:
+        for record in records:
+            json.dump(record, f)
+            f.write("\n")
 
-print("✅ Done generating episodes_stats.jsonl")
+    print("✅ Done generating episodes_stats.jsonl")
+
+
+if __name__ == "__main__":
+    main()

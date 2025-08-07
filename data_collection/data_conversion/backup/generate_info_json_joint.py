@@ -39,14 +39,14 @@ info = {
             "dtype": "float32",
             "shape": [8],
             "names": {
-                "pose": ["x", "y", "z", "qx", "qy", "qz", "qw", "gripper"]
+                "pose": ["right_shoulder_pitch", "right_shoulder_roll", "right_elbow_yaw", "right_elbow_pitch", "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll", "gripper"]
             }
         },
         "action": {
             "dtype": "float32",
             "shape": [8],
             "names": {
-                "pose": ["x", "y", "z", "qx", "qy", "qz", "qw", "gripper"]
+                "pose": ["right_shoulder_pitch", "right_shoulder_roll", "right_elbow_yaw", "right_elbow_pitch", "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll", "gripper"]
             }
         },
         "episode_index": {"dtype": "int64", "shape": [1], "names": None},

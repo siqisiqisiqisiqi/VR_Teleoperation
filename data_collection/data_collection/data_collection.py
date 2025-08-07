@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 import os
-import pickle
 import re
+import time
+import sys
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)
+sys.path.append(PARENT_DIR)
 
 import numpy as np
 from rclpy.node import Node
 import rclpy
-import time
 from sensor_msgs.msg import Image, JointState
 from geometry_msgs.msg import Pose
 from std_msgs.msg import String
@@ -15,6 +19,8 @@ from cv_bridge import CvBridge
 from threading import Lock
 from numpy.linalg import norm
 import cv2
+
+from src.save_data import save_data
 
 bridge = CvBridge()
 
@@ -30,6 +36,7 @@ class DataCollector(Node):
 
         # Data Buffers
         self.lock = Lock()
+        self.current_joint = None
         self.current_state = None
         self.current_action = None
         self.cam_left = None
@@ -44,7 +51,7 @@ class DataCollector(Node):
             JointState, '/joint_states_isaac', self.joint_callback, 10)
         self.create_subscription(Pose, '/hand_pose_ik', self.pose_callback, 10)
         self.create_subscription(
-            JointState, '/joint_command', self.hand_state_callback, 10)
+            JointState, '/joint_command', self.action_callback, 10)
         self.create_subscription(
             Image, '/rgb_global', self.global_image_callback, 10)
         self.create_subscription(
@@ -55,21 +62,33 @@ class DataCollector(Node):
             String, '/recording_trigger', self.state_callback, 10)
 
         # For action
-        self.ee_pose = None
+        self.state_action = None
+        self.joint_action = None
         self.gripper_state = 0
         self.hand_joint = [
             "right_index_1_joint", "right_little_1_joint", "right_middle_1_joint",
             "right_ring_1_joint", "right_thumb_1_joint", "right_thumb_2_joint"
         ]
+        self.arm_joint = [
+            "right_shoulder_pitch", "right_shoulder_roll",
+            "right_elbow_yaw", "right_elbow_pitch",
+            "right_wrist_yaw", "right_wrist_pitch", "right_wrist_roll"
+        ]
 
         # Timer for recording
-        self.episode = []
+        self.episode = {
+            "observation.joint": [],
+            "observation.state": [],
+            "observation.images": [],
+            "action.state": [],
+            "action.joint": [],
+        }
         self.frame_idx = 0
         existing_files = os.listdir(self.save_dir)
         episode_indices = []
 
-        for fname in existing_files:
-            match = re.match(r"episode_(\d+)\.pkl", fname)
+        for folder_name in existing_files:
+            match = re.match(r"episode_(\d+)", folder_name)
             if match:
                 episode_indices.append(int(match.group(1)))
 
@@ -95,30 +114,46 @@ class DataCollector(Node):
             self.current_state[3:7] = [ori.x, ori.y, ori.z, ori.w]
 
     def joint_callback(self, msg):
+        """joint state subscription
+        """
         with self.lock:
             if self.current_state is None:
                 self.current_state = [0.0] * 8
             position = msg.position
             name_list = msg.name
+
             finger_config = np.zeros(len(self.hand_joint))
             for i, joints in enumerate(self.hand_joint):
                 idx = name_list.index(joints)
                 finger_config[i] = position[idx]
             self.current_state[7] = 1 if norm(finger_config[:4]) > 0.5 else 0
 
-    def pose_callback(self, msg):
-        self.ee_pose = msg
+            self.current_joint = [0.0] * len(self.arm_joint)
+            for i, joints in enumerate(self.arm_joint):
+                idx = name_list.index(joints)
+                self.current_joint[i] = position[idx]
 
-    def hand_state_callback(self, msg):
+    def pose_callback(self, msg):
+        """keyboard task space action
+        """
+        self.state_action = msg
+
+    def action_callback(self, msg):
         with self.lock:
             position = msg.position
             name_list = msg.name
+
             finger_config = np.zeros(len(self.hand_joint))
             try:
                 for i, joints in enumerate(self.hand_joint):
                     idx = name_list.index(joints)
                     finger_config[i] = position[idx]
                 self.gripper_state = 1 if norm(finger_config[:4]) > 0.5 else 0
+
+                self.joint_action = np.zeros(len(self.arm_joint))
+                for i, joints in enumerate(self.arm_joint):
+                    idx = name_list.index(joints)
+                    self.joint_action[i] = position[idx]
             except:
                 pass
 
@@ -141,12 +176,21 @@ class DataCollector(Node):
         with self.lock:
             return list(self.current_state) if self.current_state else [0.0] * 8
 
-    def get_action(self):
-        if self.ee_pose is None:
+    def get_joint(self):
+        with self.lock:
+            return list(self.current_joint) if self.current_joint else [0.0] * len(self.arm_joint)
+
+    def get_state_action(self):
+        if self.state_action is None:
             return [0.0] * 7 + [self.gripper_state]
-        pos = self.ee_pose.position
-        ori = self.ee_pose.orientation
+        pos = self.state_action.position
+        ori = self.state_action.orientation
         return [pos.x, pos.y, pos.z, ori.x, ori.y, ori.z, ori.w, self.gripper_state]
+
+    def get_joint_action(self):
+        if self.joint_action is None:
+            return [0.0] * 7
+        return list(self.joint_action)
 
     def get_camera_images(self):
         return {
@@ -160,30 +204,28 @@ class DataCollector(Node):
             time.sleep(0.2)
             return
         state = self.get_state()
-        action = self.get_action()
+        joint = self.get_joint()
+        state_action = self.get_state_action()
+        joint_action = self.get_joint_action()
         images = self.get_camera_images()
 
-        record = {
-            "observation": {
-                "state": state,
-                "images": images
-            },
-            "action": action
-        }
-        self.episode.append(record)
-
-        # self.get_logger().info(
-        #     f"Recording step {self.frame_idx}: action={action}")
+        self.episode["observation.joint"].append(joint)
+        self.episode["observation.state"].append(state)
+        self.episode["observation.images"].append(images)
+        self.episode["action.state"].append(state_action)
+        self.episode["action.joint"].append(joint_action)
 
         self.frame_idx = self.frame_idx + 1
 
         if self.state == "stop":  # example episode length
-            filename = os.path.join(
-                self.save_dir, f"episode_{self.episode_idx:03d}.pkl")
-            with open(filename, 'wb') as f:
-                pickle.dump(self.episode, f)
+
+            output_folder = os.path.join(
+                self.save_dir, f"episode_{self.episode_idx:03d}")
+            os.makedirs(output_folder, exist_ok=True)
+
+            save_data(self.episode, self.episode_idx, output_folder)
             self.get_logger().info(
-                f"Saved episode {self.episode_idx} with {len(self.episode)} steps")
+                f"Saved episode {self.episode_idx} with {self.frame_idx} steps")
 
             # reset
             self.running = False

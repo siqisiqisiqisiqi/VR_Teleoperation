@@ -1,11 +1,17 @@
-# convert_to_lerobot_format.py
 import os
-import pickle
 import cv2
+import pickle
+import sys
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)
+sys.path.append(PARENT_DIR)
+
 import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 from tqdm import tqdm
+from src.sixd_rotation import so3_to_sixd
 
 # Config
 INPUT_DIR = "./my_dataset"
@@ -67,6 +73,20 @@ for i, filename in tqdm(enumerate(pkl_files), total=len(pkl_files)):
     for t, step in enumerate(episode):
         obs = step['observation']
         act = step['action']
+        quat = act[3:7]
+        sixd_rot = so3_to_sixd(quat)
+        new_act = [0]*10
+        new_act[0:3] = act[0:3]
+        new_act[3:9] = sixd_rot
+        new_act[-1] = act[-1]
+
+        sta = obs['state']
+        quat2 = sta[3:7]
+        sixd_rot2 = so3_to_sixd(quat2)
+        new_sta = [0]*10
+        new_sta[0:3] = sta[0:3]
+        new_sta[3:9] = sixd_rot2
+        new_sta[-1] = sta[-1]
 
         for cam in CAMERA_KEYS:
             img = obs['images'][cam]
@@ -74,8 +94,8 @@ for i, filename in tqdm(enumerate(pkl_files), total=len(pkl_files)):
                 img, (640, 360), interpolation=cv2.INTER_AREA)
             video_buffers[cam].append(resiz_img)
 
-        state = np.array(obs['state'], dtype=np.float32)
-        action = np.array(act, dtype=np.float32)
+        state = np.array(new_sta, dtype=np.float32)
+        action = np.array(new_act, dtype=np.float32)
 
         data["observation.state"].append(state)
         data["action"].append(action)

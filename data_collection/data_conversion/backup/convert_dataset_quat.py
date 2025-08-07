@@ -1,20 +1,30 @@
-# import pandas as pd
-
-# df = pd.read_parquet('./lerobot_dataset/data/chunk-000/episode_000001.parquet')
-# print(df)
-
 import os
 import pickle
 import cv2
 import numpy as np
+import pyarrow as pa
+import pyarrow.parquet as pq
 from tqdm import tqdm
 
 # Config
 INPUT_DIR = "./my_dataset"
-OUTPUT_DIR = "./test/converted_dataset"
-CAMERA_KEYS = ["cam1", "cam2", "cam3"]
-VIDEO_DIRS = "./test/converted_dataset"
+OUTPUT_DIR = "./lerobot_dataset"
 FPS = 10
+CAMERA_KEYS = ["cam1", "cam2", "cam3"]
+CHUNK_NAME = "chunk-000"
+
+# Create output directories
+DATA_DIR = os.path.join(OUTPUT_DIR, "data", CHUNK_NAME)
+VIDEO_DIRS = {
+    cam: os.path.join(OUTPUT_DIR, "videos", CHUNK_NAME,
+                      f"observation.images.{cam}")
+    for cam in CAMERA_KEYS
+}
+META_DIR = os.path.join(OUTPUT_DIR, "meta")
+os.makedirs(DATA_DIR, exist_ok=True)
+for d in VIDEO_DIRS.values():
+    os.makedirs(d, exist_ok=True)
+os.makedirs(META_DIR, exist_ok=True)
 
 # Helper to write video
 def write_video(frames, path, fps):
@@ -75,16 +85,13 @@ for i, filename in tqdm(enumerate(pkl_files), total=len(pkl_files)):
         data["index"].append(index)
         data["task_index"].append(0)
         index = index + 1
-    
-    for key in data:
-        data[key] = np.array(data[key])
 
-    npz_path = os.path.join(OUTPUT_DIR, f"episode_{i:06d}.npz")
-    np.savez_compressed(npz_path, **data)
+    # Save parquet
+    table = pa.Table.from_pydict(data)
+    pq_path = os.path.join(DATA_DIR, f"episode_{i:06d}.parquet")
+    pq.write_table(table, pq_path)
 
+    # Save videos
     for cam in CAMERA_KEYS:
-        video_path = os.path.join(VIDEO_DIRS, f"{cam}_episode_{i:06d}.mp4")
+        video_path = os.path.join(VIDEO_DIRS[cam], f"episode_{i:06d}.mp4")
         write_video(video_buffers[cam], video_path, FPS)
-
-    break
-

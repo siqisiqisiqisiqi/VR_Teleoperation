@@ -1331,7 +1331,7 @@
     <parent link="right_wrist_pitch_link" />
     <child link="right_wrist_roll_link" />
     <axis xyz="1 0 0" />
-    <limit lower="0" upper="1.57" effort="4.8" velocity="4.71" />
+    <limit lower="-1.57" upper="1.57" effort="4.8" velocity="4.71" />
   </joint>
   <!-- Right hand -->
   <link name="right_hand_base_link">
