@@ -24,8 +24,8 @@ def so3_to_sixd(q):
     """
     Convert 4D quaternion (x,y,z,w) to 6D representation.
     """
-    R = quaternion_to_matrix(q)
-    return R[:, :2].T.reshape(-1)
+    Rot = quaternion_to_matrix(q)
+    return Rot[:, :2].T.reshape(-1)
 
 
 def normalize(v):
@@ -44,7 +44,7 @@ def sixd_to_so3(sixd):
     b2 = normalize(a2 - proj)
     b3 = np.cross(b1, b2)
 
-    R = np.stack([b1, b2, b3], axis=1)
+    Rot = np.stack([b1, b2, b3], axis=1)
 
-    quat = matrix_to_quaternion(R)
+    quat = matrix_to_quaternion(Rot)
     return quat

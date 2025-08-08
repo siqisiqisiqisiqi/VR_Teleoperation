@@ -19,12 +19,12 @@ KEY_BINDINGS_POSE = {
     'd': ('pos', 1, -0.001),  # Y-
     'q': ('pos', 2, 0.001),  # Z+
     'e': ('pos', 2, -0.001),  # Z-
-    'i': ('rpy', 1, 1.0),   # Pitch+
-    'k': ('rpy', 1, -1.0),   # Pitch-
-    'j': ('rpy', 0, 1.0),   # Roll+
-    'l': ('rpy', 0, -1.0),   # Roll-
-    'u': ('rpy', 2, 1.0),   # Yaw+
-    'o': ('rpy', 2, -1.0),   # Yaw-
+    'i': ('rpy', 1, 0.5),   # Pitch+
+    'k': ('rpy', 1, -0.5),   # Pitch-
+    'j': ('rpy', 0, 0.5),   # Roll+
+    'l': ('rpy', 0, -0.5),   # Roll-
+    'u': ('rpy', 2, 0.5),   # Yaw+
+    'o': ('rpy', 2, -0.5),   # Yaw-
 }
 
 

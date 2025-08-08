@@ -60,6 +60,8 @@ class DatasetConverter:
         global_index = 0
 
         for i, file_path in tqdm(enumerate(npz_files), total=len(npz_files), desc="Converting episodes"):
+            if i == 18:
+                pass
             episode = np.load(file_path, allow_pickle=True)
 
             data = {
@@ -107,17 +109,17 @@ class DatasetConverter:
                 global_index += 1
 
             # Save parquet
-            table = pa.Table.from_pydict(data)
-            pq_path = os.path.join(self.data_dir, f"episode_{i:06d}.parquet")
-            pq.write_table(table, pq_path)
+            # table = pa.Table.from_pydict(data)
+            # pq_path = os.path.join(self.data_dir, f"episode_{i:06d}.parquet")
+            # pq.write_table(table, pq_path)
 
-            dir_path = os.path.dirname(file_path)
-            copy_existing_videos(
-                src_folder=dir_path,
-                dst_root=self.video_dirs,
-                episode_idx=i,
-                camera_keys=self.camera_keys
-            )
+            # dir_path = os.path.dirname(file_path)
+            # copy_existing_videos(
+            #     src_folder=dir_path,
+            #     dst_root=self.video_dirs,
+            #     episode_idx=i,
+            #     camera_keys=self.camera_keys
+            # )
 
 
 def main():

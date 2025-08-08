@@ -57,6 +57,7 @@ class PoseIKController(Node):
 
         # Create a periodic timer to run the update loop
         self.timer = self.create_timer(0.05, self.update_robot)  # 20Hz
+        # self.timer = self.create_timer(0.1, self.update_robot)  # 20Hz
 
     def setup_ros(self):
         self.get_logger().info('Setting up ROS I/O...')
@@ -170,12 +171,12 @@ class PoseIKController(Node):
         iMd = self.data.oMf[self.frame_id].actInv(self.oMdes_smoothed)
         err = pin.log(iMd).vector
 
-        T = self.data.oMf[self.frame_id]
-        rotation_matrix = T.rotation
-        # Convert rotation matrix to RPY (in degrees)
-        rpy_current = R.from_matrix(
-            rotation_matrix).as_euler('xyz', degrees=False)
-        current_quat = R.from_euler('xyz', rpy_current).as_quat()
+        # T = self.data.oMf[self.frame_id]
+        # rotation_matrix = T.rotation
+        # # Convert rotation matrix to RPY (in degrees)
+        # rpy_current = R.from_matrix(
+        #     rotation_matrix).as_euler('xyz', degrees=False)
+        # current_quat = R.from_euler('xyz', rpy_current).as_quat()
         # print("📌 Pinocchio EE pose:")
         # print("desired  Translation:", translation)
         # print("current  Translation:", T.translation)
@@ -183,6 +184,7 @@ class PoseIKController(Node):
         #     f"desired quat: x={ori.x:.2f}, y={ori.y:.2f}, z={ori.z:.2f}, w={ori.w:.2f}")
         # print(
         #     f"current quat: x={current_quat[0]:.2f}, y={current_quat[1]:.2f}, z={current_quat[2]:.2f}, w={current_quat[3]:.2f}")
+
         if np.linalg.norm(err) < 1e-3:
             self.get_logger().info("arrved at the target position!")
             return
@@ -199,14 +201,12 @@ class PoseIKController(Node):
         dq_null_desired = np.zeros(self.model.nv)
         dq_null_desired[2] = self.q_home[2] - q_measured[2]
         dq_null_desired[3] = self.q_home[3] - q_measured[3]
-        # dq_null_desired[2] = -0.65 - q_measured[2]
-        # dq_null_desired[3] = -0.25 - q_measured[3]
 
         P_null = np.eye(self.model.nv) - J_pinv @ J
         dq_null = P_null @ dq_null_desired
 
         v = v_task + dq_null
-        q_next = pin.integrate(self.model, q_measured, v * 1.0)
+        q_next = pin.integrate(self.model, q_measured, v * 1.2)
 
         # Step 4: publish joint command
         msg = JointState()
