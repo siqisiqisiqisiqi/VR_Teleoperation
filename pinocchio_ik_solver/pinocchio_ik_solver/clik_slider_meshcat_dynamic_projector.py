@@ -169,19 +169,28 @@ class PoseIKController:
         J = -pin.Jlog6(iMd.inverse()).dot(J)
 
         lambda_damp = 1e-6
-        J_pinv = J.T @ np.linalg.inv(J @ J.T + lambda_damp * np.eye(6))
+        # J_pinv = J.T @ np.linalg.inv(J @ J.T + lambda_damp * np.eye(6))
+        M = pin.crba(self.model, self.data, self.q)
+        M = 0.5 * (M + M.T)
+        Minv = np.linalg.inv(M)
+        JMJt = J @ Minv @ J.T
+        J_sharp = Minv @ J.T @ np.linalg.inv(JMJt +
+                                             lambda_damp * np.eye(J.shape[0]))
 
-        v_task = -J_pinv @ err
+        v_task = -J_sharp @ err
 
-        dq_null_desired = np.zeros(self.model.nv)
-        dq_null_desired[2] = -0.65 - self.q[2]
-        dq_null_desired[3] = -0.25 - self.q[3]
-        P_null = np.eye(self.model.nv) - J_pinv @ J
+        k_null = 0.1
+        # dq_null_desired = np.zeros(self.model.nv)
+        # dq_null_desired[1] = k_null * (self.q_home[1] - self.q[1])
+        # dq_null_desired[2] = k_null * (self.q_home[2] - self.q[2])
+        dq_null_desired = k_null * (self.q_home - self.q)
+        P_null = np.eye(self.model.nv) - J_sharp @ J
         dq_null = P_null @ dq_null_desired
 
         print(f"‖v_task‖: {np.linalg.norm(v_task):.4f}")
         print(f"dq_null value is : {dq_null}")
 
+        # v = v_task
         v = v_task + dq_null
         self.q[:] = pin.integrate(self.model, self.q, v * 0.02)
 
