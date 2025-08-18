@@ -38,17 +38,17 @@ class DatasetConverter:
         for d in self.video_dirs.values():
             os.makedirs(d, exist_ok=True)
 
-    def write_video(self, frames, path):
-        height, width, _ = frames[0].shape
-        writer = cv2.VideoWriter(
-            path,
-            cv2.VideoWriter_fourcc(*'mp4v'),
-            self.fps,
-            (width, height)
-        )
-        for f in frames:
-            writer.write(f)
-        writer.release()
+    # def write_video(self, frames, path):
+    #     height, width, _ = frames[0].shape
+    #     writer = cv2.VideoWriter(
+    #         path,
+    #         cv2.VideoWriter_fourcc(*'mp4v'),
+    #         self.fps,
+    #         (width, height)
+    #     )
+    #     for f in frames:
+    #         writer.write(f)
+    #     writer.release()
 
     def convert(self):
         npz_files = []
@@ -126,7 +126,8 @@ def main():
     converter = DatasetConverter(
         input_dir="./my_dataset",          # directory containing .npz files
         output_dir="./lerobot_dataset",    # output root
-        camera_keys=["cam1", "cam2", "cam3"],  # expected camera keys
+        # camera_keys=["cam1", "cam2", "cam3"],  # expected camera keys
+        camera_keys=["cam2", "cam3"],  # expected camera keys
         chunk_name="chunk-000",                # subfolder name
         fps=10
     )

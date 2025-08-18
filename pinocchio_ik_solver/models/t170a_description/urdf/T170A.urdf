@@ -1157,7 +1157,8 @@
     <parent link="waist_pitch_link" />
     <child link="right_shoulder_pitch_link" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.087" upper="2.09" effort="66" velocity="3.56" />
+    <!-- <limit lower="-0.087" upper="2.09" effort="66" velocity="3.56" /> -->
+    <limit lower="-0.30" upper="2.09" effort="66" velocity="3.56" />
   </joint>
   <link name="right_shoulder_roll_link">
     <inertial>

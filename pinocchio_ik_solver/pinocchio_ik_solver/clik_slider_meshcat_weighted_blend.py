@@ -151,48 +151,33 @@ class PoseIKController:
         rpy_current = R.from_matrix(
             rotation_matrix).as_euler('xyz', degrees=False)
         current_quat = R.from_euler('xyz', rpy_current).as_quat()
-        # print("📌 Pinocchio EE pose:")
-        # print("  Translation:", T.translation)
-        # # print(
-        # #     f"📌 End-effector RPY (deg): roll={rpy[0]:.2f}, pitch={rpy[1]:.2f}, yaw={rpy[2]:.2f}")
-        # print(
-        #     f"Desired quat: x={desired_quat[0]:.2f}, y={desired_quat[1]:.2f}, z={desired_quat[2]:.2f}, w={desired_quat[3]:.2f}")
-        # print(
-        #     f"current quat: x={current_quat[0]:.2f}, y={current_quat[1]:.2f}, z={current_quat[2]:.2f}, w={current_quat[3]:.2f}")
 
         if np.linalg.norm(err) < 1e-3:
-            print("arrved at the target position!")
+            # print("arrved at the target position!")
             return
 
         J = pin.computeJointJacobian(
             self.model, self.data, self.q, self.joint_id)
         J = -pin.Jlog6(iMd.inverse()).dot(J)
 
-        lambda_damp = 1e-6
-        # J_pinv = J.T @ np.linalg.inv(J @ J.T + lambda_damp * np.eye(6))
+        k_task = 3.0                          # task weights
+        R_eye = np.eye(6)                     # translation and rotation weights
+        beta = 0.1                            # posture weights
+        lam = 1e-6                            # prevent matrix singular
+        k_null = 0.1                          # position to vel transition parameters
+        vel_lim = 2                           # limit joint velocity
+
         M = pin.crba(self.model, self.data, self.q)
         M = 0.5 * (M + M.T)
-        Minv = np.linalg.inv(M)
-        JMJt = J @ Minv @ J.T
-        J_sharp = Minv @ J.T @ np.linalg.inv(JMJt +
-                                             lambda_damp * np.eye(J.shape[0]))
+        W = beta * M
+        v_null = k_null * (self.q_home - self.q)
 
-        v_task = -J_sharp @ err
+        H = J.T @ R_eye @ J + W + lam * np.eye(J.shape[1])   # SPD
+        b = -k_task * (J.T @ R_eye @ err) + W @ v_null
+        v = np.linalg.solve(H, b)         # no explicit inverse
+        v = np.clip(v, -vel_lim, vel_lim)
 
-        k_null = 0.1
-        # dq_null_desired = np.zeros(self.model.nv)
-        # dq_null_desired[1] = k_null * (self.q_home[1] - self.q[1])
-        # dq_null_desired[2] = k_null * (self.q_home[2] - self.q[2])
-        dq_null_desired = k_null * (self.q_home - self.q)
-        P_null = np.eye(self.model.nv) - J_sharp @ J
-        dq_null = P_null @ dq_null_desired
-
-        print(f"‖v_task‖: {np.linalg.norm(v_task):.4f}")
-        print(f"dq_null value is : {dq_null}")
-
-        # v = v_task
-        v = v_task + dq_null
-        self.q[:] = pin.integrate(self.model, self.q, v * 0.02)
+        self.q[:] = pin.integrate(self.model, self.q, v * 0.05)
 
         if self.enable_meshcat:
             self.viz.display(self.q)

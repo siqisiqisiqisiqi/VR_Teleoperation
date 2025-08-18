@@ -42,10 +42,19 @@
         <joint name="right_elbow_yaw" value="0.01"/>
         <joint name="right_shoulder_pitch" value="0.14"/>
         <joint name="right_shoulder_roll" value="-0.41"/>
-        <joint name="right_wrist_pitch" value="-0.13"/>
-        <joint name="right_wrist_roll" value="0.0"/>
-        <joint name="right_wrist_yaw" value="0.058"/>
+        <joint name="right_wrist_pitch" value="-0.22"/>
+        <joint name="right_wrist_roll" value="-0.30"/>
+        <joint name="right_wrist_yaw" value="0.60"/>
     </group_state>
+    <!-- <group_state name="right_initial" group="right_arm">
+        <joint name="right_elbow_pitch" value="1.83"/>
+        <joint name="right_elbow_yaw" value="0.16"/>
+        <joint name="right_shoulder_pitch" value="-0.20"/>
+        <joint name="right_shoulder_roll" value="-0.54"/>
+        <joint name="right_wrist_pitch" value="0.02"/>
+        <joint name="right_wrist_roll" value="-0.30"/>
+        <joint name="right_wrist_yaw" value="0.75"/>
+    </group_state> -->
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_link"/>
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->

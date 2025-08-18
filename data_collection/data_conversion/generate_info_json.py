@@ -17,7 +17,8 @@ class InfoConfig:
     dataset_root: Path = Path("./lerobot_dataset")
     data_glob: str = "data/chunk-*/episode_*.parquet"   # supports multiple chunks
     meta_dir: Path = Path("./lerobot_dataset/meta")
-    camera_keys: List[str] = field(default_factory=lambda: ["cam1", "cam2", "cam3"])
+    # camera_keys: List[str] = field(default_factory=lambda: ["cam1", "cam2", "cam3"])
+    camera_keys: List[str] = field(default_factory=lambda: ["cam2", "cam3"])
     fps: int = 10
     chunk_size: int = 1000
     codebase_version: str = "v2.1"
@@ -168,7 +169,8 @@ def main():
     cfg = InfoConfig(
         dataset_root=Path("./lerobot_dataset"),
         meta_dir=Path("./lerobot_dataset/meta"),
-        camera_keys=["cam1", "cam2", "cam3"],
+        # camera_keys=["cam1", "cam2", "cam3"],
+        camera_keys=["cam2", "cam3"],
         fps=10,
         chunk_size=1000,
         codebase_version="v2.1",

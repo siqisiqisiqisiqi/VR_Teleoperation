@@ -117,6 +117,7 @@ class PoseIKController(Node):
         self.joint_id = self.model.frames[self.frame_id].parentJoint
 
         pin.loadReferenceConfigurations(self.model, srdf_model_path)
+        # q = self.model.referenceConfigurations["right_initial"]
         q = self.model.referenceConfigurations["right_home"]
         self.q_home = copy.copy(q)
 

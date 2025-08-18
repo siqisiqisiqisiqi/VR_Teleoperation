@@ -180,9 +180,6 @@ class PoseIKController:
         v_task = -J_sharp @ err
 
         k_null = 0.1
-        # dq_null_desired = np.zeros(self.model.nv)
-        # dq_null_desired[1] = k_null * (self.q_home[1] - self.q[1])
-        # dq_null_desired[2] = k_null * (self.q_home[2] - self.q[2])
         dq_null_desired = k_null * (self.q_home - self.q)
         P_null = np.eye(self.model.nv) - J_sharp @ J
         dq_null = P_null @ dq_null_desired
